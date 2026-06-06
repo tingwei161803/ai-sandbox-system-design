@@ -18,8 +18,8 @@ window.SITE_META = {
   title:    { en: "AI Sandbox Architecture", zh: "AI Sandbox 安全沙盒架構" },
   subtitle: { en: "A secure sandbox for running untrusted, AI-generated code.",
               zh: "用來安全執行不可信、AI 產生程式碼的沙盒系統。" },
-  footer:   { en: "Static, no build step.",
-              zh: "純靜態，無建置流程。" }
+  footer:   { en: "Curated by Peter Chang · Static site, no build step.",
+              zh: "整理者：Peter Chang · 純靜態網站，無建置流程。" }
 };
 
 window.SITE_PAGES = [
@@ -44,38 +44,29 @@ window.SITE_PAGES = [
   /* 2 · ARCHITECTURE (bento)                                               */
   /* ===================================================================== */
   {
-    slug: "architecture", layout: "bento", icon: "account_tree",
+    slug: "architecture", layout: "archstack", icon: "account_tree",
     title:    { en: "System Architecture", zh: "系統架構總覽" },
-    subtitle: { en: "How the five layers fit together, from the browser down to the kernel-level sandbox.",
-                zh: "五層如何串接 —— 從瀏覽器一路到核心層的沙盒。" },
-    tiles: [
-      { size: "lg", accent: true, icon: "hub",
-        value: "5",
-        title: { en: "Five-layer secure pipeline", zh: "五層式安全管線" },
-        body: { en: "UI → Database → Job Manager → Sandbox Executor → Monitoring. Each layer has one job, so a failure (or a hostile workload) stays contained instead of spreading.",
-                zh: "前端 UI → 資料庫 → 任務管理器 → 沙盒執行層 → 監控與日誌。每層只做一件事，因此故障（或惡意工作負載）會被框住，而不會擴散。" } },
-      { size: "sm", icon: "devices",
-        title: { en: "Frontend UI", zh: "前端 UI" },
-        body: { en: "Upload, launch, view results.", zh: "上傳、啟動、看結果。" } },
-      { size: "sm", icon: "database",
-        title: { en: "Database", zh: "資料庫" },
-        body: { en: "Jobs, results, logs.", zh: "任務、結果、日誌。" } },
-      { size: "wide", icon: "manage_accounts",
-        title: { en: "Job Manager", zh: "任務管理器" },
-        body: { en: "Dispatches tasks to nodes, watches their status, returns results to the sandbox store.",
-                zh: "把任務派送到節點、監看狀態、把結果存回 Sandbox。" } },
-      { size: "tall", accent: true, icon: "security",
-        value: "4",
-        title: { en: "Sandbox Executor", zh: "沙盒執行層" },
-        body: { en: "The security core. Namespaces + Seccomp-BPF + Cgroups + Timeout enforce isolation, resource caps and time limits together — defense in depth.",
-                zh: "安全核心。Namespace + Seccomp-BPF + Cgroup + Timeout 一起把關隔離、資源上限與時間限制 —— 縱深防禦。" } },
-      { size: "sm", icon: "monitor_heart",
-        title: { en: "Monitoring & Logs", zh: "監控與日誌" },
-        body: { en: "Live metrics, alerts, audit.", zh: "即時指標、告警、稽核。" } },
-      { size: "md", icon: "gpp_maybe",
-        title: { en: "Untrusted by default", zh: "預設不信任" },
-        body: { en: "Code is treated as hostile until it has been through every isolation layer.",
-                zh: "程式碼在通過每一道隔離前，一律視為具敵意。" } }
+    subtitle: { en: "Five layers, top to bottom — from the browser down to the kernel-level sandbox.",
+                zh: "五層由上而下 —— 從瀏覽器一路到核心層的沙盒。" },
+    intro: { en: "Data flows top to bottom: each layer hands off to the next, and the untrusted code only ever runs at the guarded core. Each layer has one job, so a failure (or a hostile workload) stays contained instead of spreading.",
+             zh: "資料由上而下流動：每一層交棒給下一層，而不可信的程式碼只在被嚴密看守的核心執行。每層只做一件事，因此故障（或惡意工作負載）會被框住，而不會擴散。" },
+    layers: [
+      { icon: "devices", name: { en: "Frontend UI", zh: "前端 UI" },
+        role: { en: "Upload, launch, view results", zh: "上傳、啟動、看結果" },
+        items: [ { en: "File upload", zh: "檔案上傳" }, { en: "Sandbox launch", zh: "沙盒啟動" }, { en: "Result display", zh: "執行結果呈現" } ] },
+      { icon: "database", name: { en: "Database", zh: "資料庫" },
+        role: { en: "Temporary & result store", zh: "暫存 / 結果儲存" },
+        items: [ { en: "Job (ID / Status)", zh: "Job 任務紀錄" }, { en: "Results", zh: "Results 結果" }, { en: "Logs", zh: "Logs 日誌" } ] },
+      { icon: "manage_accounts", name: { en: "Job Manager", zh: "任務管理器" },
+        role: { en: "Dispatch · monitor · return", zh: "派送 · 監控 · 回傳" },
+        items: [ { en: "Dispatch to nodes", zh: "派送到節點" }, { en: "Monitor status", zh: "監控節點狀態" }, { en: "Return results", zh: "回傳執行結果" }, { en: "Store to Sandbox", zh: "存回 Sandbox" } ] },
+      { icon: "security", name: { en: "Sandbox Executor", zh: "沙盒執行層" },
+        role: { en: "Runs untrusted code under four kernel-level controls", zh: "在四道核心層級控制下執行不可信程式碼" },
+        accent: true, tag: { en: "Security core", zh: "安全核心" },
+        items: [ { en: "Linux Namespace", zh: "Linux Namespace" }, { en: "Seccomp-BPF", zh: "Seccomp-BPF" }, { en: "Cgroups", zh: "Cgroup" }, { en: "Timeout", zh: "Timeout" } ] },
+      { icon: "monitor_heart", name: { en: "Monitoring & Logs", zh: "監控與日誌" },
+        role: { en: "Observe everything, touch nothing", zh: "觀測一切、不碰沙盒" },
+        items: [ { en: "Live resource metrics", zh: "即時資源監控" }, { en: "Anomaly alerts", zh: "異常告警" }, { en: "Log query", zh: "執行記錄查詢" } ] }
     ]
   },
 
@@ -324,7 +315,92 @@ window.SITE_PAGES = [
   },
 
   /* ===================================================================== */
-  /* 7 · GLOSSARY (custom layout)                                           */
+  /* 7 · ROLES / LEARNING ROADMAP (custom layout)                          */
+  /* ===================================================================== */
+  {
+    slug: "roles", layout: "roadmap", icon: "school",
+    title:    { en: "Learning Paths by Role", zh: "角色學習地圖" },
+    subtitle: { en: "Want to help build a system like this? Here's what each role learns — and to what depth.",
+                zh: "想參與打造這樣一套系統？這裡列出每個角色要學什麼 —— 以及學到什麼程度。" },
+    intro: { en: "Pick the role you want to grow into, then read down its skills. The badge on each skill says how deep you need to go: just understand it, be able to use it, build it from scratch, or master it.",
+             zh: "挑一個你想成為的角色，往下看它的技能清單。每項技能的標籤代表你要鑽多深：只要了解、會用、能從零實作、還是要精通。" },
+    levels: [
+      { key: "aware",  label: { en: "Aware",  zh: "了解" }, note: { en: "grasp the concept & trade-offs", zh: "懂概念與取捨，不必動手" } },
+      { key: "use",    label: { en: "Use",    zh: "會用" }, note: { en: "use existing tools to get it done", zh: "能用現成工具完成任務" } },
+      { key: "build",  label: { en: "Build",  zh: "實作" }, note: { en: "build, debug & integrate it yourself", zh: "能從零打造、除錯、整合" } },
+      { key: "master", label: { en: "Master", zh: "精通" }, note: { en: "design, optimize & teach it", zh: "能設計、最佳化、教別人" } }
+    ],
+    roles: [
+      {
+        icon: "architecture",
+        name: { en: "System Architect", zh: "系統架構師" },
+        goal: { en: "Design the whole secure, scalable system and its trade-offs.", zh: "設計整套安全、可擴充的系統與其取捨。" },
+        skills: [
+          { name: { en: "System design & trade-offs", zh: "系統設計與取捨" }, level: "master" },
+          { name: { en: "Isolation model (namespace / seccomp / cgroup)", zh: "隔離模型（namespace / seccomp / cgroup）" }, level: "build", note: { en: "deep enough to choose the right mix", zh: "深到足以選對組合" } },
+          { name: { en: "Distributed systems & scaling (control vs data plane)", zh: "分散式系統與擴充（控制／資料平面）" }, level: "build" },
+          { name: { en: "Threat modeling", zh: "威脅模型" }, level: "use" },
+          { name: { en: "Container vs microVM trade-offs (gVisor / Firecracker)", zh: "容器 vs microVM 取捨（gVisor / Firecracker）" }, level: "use" },
+          { name: { en: "Observability by design", zh: "可觀測性設計" }, level: "use" }
+        ]
+      },
+      {
+        icon: "terminal",
+        name: { en: "Backend / Platform Engineer", zh: "後端 / 平台工程師" },
+        goal: { en: "Build the Job Manager and the Sandbox Executor.", zh: "實作任務管理器與沙盒執行層。" },
+        skills: [
+          { name: { en: "Linux systems programming (processes, syscalls)", zh: "Linux 系統程式設計（行程、syscall）" }, level: "build" },
+          { name: { en: "Namespace / cgroup APIs (clone, unshare, cgroupfs)", zh: "Namespace / cgroup API（clone、unshare、cgroupfs）" }, level: "build" },
+          { name: { en: "Writing seccomp-BPF filters", zh: "撰寫 seccomp-BPF 過濾器" }, level: "build" },
+          { name: { en: "Job queue & scheduling", zh: "任務佇列與排程" }, level: "build" },
+          { name: { en: "Container runtimes (runc / containerd)", zh: "容器執行期（runc / containerd）" }, level: "use" },
+          { name: { en: "Go / Rust / C (at least one)", zh: "Go / Rust / C（至少一種）" }, level: "build" }
+        ]
+      },
+      {
+        icon: "shield_person",
+        name: { en: "Security Engineer", zh: "安全工程師" },
+        goal: { en: "Harden isolation, model threats and stop sandbox escapes.", zh: "強化隔離、做威脅模型、防止沙盒逃逸。" },
+        skills: [
+          { name: { en: "Linux security model (capabilities, LSM, seccomp)", zh: "Linux 安全模型（capabilities、LSM、seccomp）" }, level: "master" },
+          { name: { en: "Sandbox escapes & attack surface", zh: "沙盒逃逸與攻擊面" }, level: "build" },
+          { name: { en: "Policy: seccomp / AppArmor / SELinux", zh: "政策：seccomp / AppArmor / SELinux" }, level: "build" },
+          { name: { en: "Threat modeling & red-teaming", zh: "威脅模型與紅隊演練" }, level: "build" },
+          { name: { en: "microVM isolation (Firecracker / KVM)", zh: "microVM 隔離（Firecracker / KVM）" }, level: "use" },
+          { name: { en: "Vulnerability research & CVE tracking", zh: "弱點研究與 CVE 追蹤" }, level: "use" }
+        ]
+      },
+      {
+        icon: "cloud_sync",
+        name: { en: "DevOps / SRE", zh: "DevOps / SRE" },
+        goal: { en: "Deploy, scale, monitor and stay on-call for the platform.", zh: "部署、擴充、監控並負責 on-call。" },
+        skills: [
+          { name: { en: "Container orchestration (Kubernetes)", zh: "容器編排（Kubernetes）" }, level: "build" },
+          { name: { en: "CI/CD & Infrastructure as Code (Terraform)", zh: "CI/CD 與基礎設施即程式碼（Terraform）" }, level: "build" },
+          { name: { en: "Observability (metrics / logs / alerts)", zh: "可觀測性（指標 / 日誌 / 告警）" }, level: "build" },
+          { name: { en: "cgroup resource quota tuning", zh: "cgroup 資源配額調校" }, level: "use" },
+          { name: { en: "Autoscaling execution nodes", zh: "執行節點自動擴縮" }, level: "build" },
+          { name: { en: "Incident response & on-call", zh: "事件應變與 on-call" }, level: "use" }
+        ]
+      },
+      {
+        icon: "web",
+        name: { en: "Frontend Engineer", zh: "前端工程師" },
+        goal: { en: "Build the UI for upload, launch and result display.", zh: "打造上傳、啟動、結果呈現的介面。" },
+        skills: [
+          { name: { en: "HTML / CSS / JavaScript fundamentals", zh: "HTML / CSS / JavaScript 基礎" }, level: "master" },
+          { name: { en: "A frontend framework (React / Vue)", zh: "前端框架（React / Vue 其一）" }, level: "build" },
+          { name: { en: "Live updates (WebSocket / SSE for job status)", zh: "即時更新（WebSocket / SSE 顯示任務狀態）" }, level: "build" },
+          { name: { en: "REST API integration", zh: "REST API 串接" }, level: "build" },
+          { name: { en: "Frontend security (XSS, output escaping)", zh: "前端資安（XSS、輸出跳脫）" }, level: "use" },
+          { name: { en: "UX & accessibility", zh: "UX 與無障礙" }, level: "use" }
+        ]
+      }
+    ]
+  },
+
+  /* ===================================================================== */
+  /* 8 · GLOSSARY (custom layout)                                           */
   /* ===================================================================== */
   {
     slug: "glossary", layout: "glossary", icon: "menu_book",
