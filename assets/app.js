@@ -349,6 +349,72 @@
             "</div></button>";
         }).join("");
         return head(p) + '<div class="flip-grid" id="flips">' + cards + "</div>";
+      },
+
+      /* ---- archstack: layered architecture diagram (top-to-bottom flow) ---- */
+      archstack: function (p) {
+        var layers = p.layers || [];
+        var blocks = layers.map(function (ly, i) {
+          var items = (ly.items || []).map(function (it) {
+            return '<span class="arch-chip">' + esc(t(it)) + "</span>";
+          }).join("");
+          var connector = i < layers.length - 1
+            ? '<div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div>'
+            : "";
+          return '<div class="arch-layer' + (ly.accent ? " arch-layer--accent" : "") + '" data-item>' +
+              '<div class="arch-layer__head">' +
+                '<span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">' + esc(ly.icon || "layers") + "</span>" +
+                '<div class="arch-layer__titles">' +
+                  '<div class="arch-layer__name">' + esc(t(ly.name)) + "</div>" +
+                  (t(ly.role) ? '<div class="arch-layer__role">' + esc(t(ly.role)) + "</div>" : "") +
+                "</div>" +
+                (t(ly.tag) ? '<span class="arch-layer__tag">' + esc(t(ly.tag)) + "</span>" : "") +
+              "</div>" +
+              (items ? '<div class="arch-layer__items">' + items + "</div>" : "") +
+            "</div>" + connector;
+        }).join("");
+        var intro = t(p.intro) ? '<p class="arch-intro">' + esc(t(p.intro)) + "</p>" : "";
+        return head(p) + intro + '<div class="archstack">' + blocks + "</div>";
+      },
+
+      /* ---- roadmap: role -> skills, each skill tagged with a target level ---- */
+      roadmap: function (p) {
+        var levels = p.levels || [];
+        var levelMap = {};
+        levels.forEach(function (lv) { levelMap[lv.key] = lv.label; });
+        function lvlText(k) { return levelMap[k] ? t(levelMap[k]) : k; }
+
+        var legendLabel = L.state.lang === "en" ? "Depth:" : "學到什麼程度？";
+        var legend = '<span class="roadmap-legend__label">' + esc(legendLabel) + "</span>" +
+          levels.map(function (lv) {
+            return '<span class="legend-item"><span class="lvl lvl--' + esc(lv.key) + '">' + esc(t(lv.label)) + "</span>" +
+              (t(lv.note) ? '<span class="legend-note">' + esc(t(lv.note)) + "</span>" : "") + "</span>";
+          }).join("");
+
+        var roles = (p.roles || []).map(function (role) {
+          var skills = (role.skills || []).map(function (s) {
+            return '<li class="skill">' +
+              '<span class="skill__name">' + esc(t(s.name)) + "</span>" +
+              '<span class="lvl lvl--' + esc(s.level) + '">' + esc(lvlText(s.level)) + "</span>" +
+              (t(s.note) ? '<span class="skill__note">' + esc(t(s.note)) + "</span>" : "") +
+              "</li>";
+          }).join("");
+          return '<section class="role-card" data-item>' +
+              '<div class="role-card__head">' +
+                '<span class="material-symbols-rounded role-card__icon" aria-hidden="true">' + esc(role.icon || "badge") + "</span>" +
+                "<div>" +
+                  '<h2 class="role-card__name">' + esc(t(role.name)) + "</h2>" +
+                  (t(role.goal) ? '<p class="role-card__goal">' + esc(t(role.goal)) + "</p>" : "") +
+                "</div>" +
+              "</div>" +
+              '<ul class="skill-list">' + skills + "</ul>" +
+            "</section>";
+        }).join("");
+
+        var intro = t(p.intro) ? '<p class="arch-intro">' + esc(t(p.intro)) + "</p>" : "";
+        return head(p) + intro +
+          '<div class="roadmap-legend">' + legend + "</div>" +
+          '<div class="role-grid">' + roles + "</div>";
       }
     };
 

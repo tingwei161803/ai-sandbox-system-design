@@ -56,6 +56,12 @@ a { color:inherit; text-decoration:none; }
   border-radius:var(--radius-lg); padding:8px 10px; cursor:pointer; font:inherit; transition:background .15s; }
 .icon-btn:hover { background:var(--surface-container-high); }
 .icon-btn__txt { font-size:.85rem; font-weight:500; }
+.gh-star { display:inline-flex; align-items:center; gap:6px; padding:7px 12px; border-radius:var(--radius-lg);
+  border:1px solid var(--outline-variant); color:var(--on-surface-variant); background:transparent;
+  font-size:.85rem; font-weight:600; transition:background .15s,border-color .15s,color .15s; }
+.gh-star:hover,.gh-star:focus-visible { background:var(--surface-container-high); border-color:var(--primary); color:var(--on-surface); outline:none; }
+.gh-star .material-symbols-rounded { font-size:18px; color:var(--tertiary); }
+.gh-star__count { font-variant-numeric:tabular-nums; min-width:1ch; }
 
 /* ---- Cross-page nav ---- */
 .pagenav {
@@ -184,6 +190,49 @@ a { color:inherit; text-decoration:none; }
 .tile__value { font-size:1.7rem; font-weight:700; color:var(--on-surface); }
 .tile__title { margin:0; font-size:1rem; color:var(--on-surface); }
 .tile__body { margin:0; font-size:.85rem; line-height:1.45; color:var(--on-surface-variant); }
+
+/* ---- Architecture stack (layered top-to-bottom flow diagram) ---- */
+.arch-intro { max-width:64ch; margin:0 auto 24px; text-align:center; color:var(--on-surface-variant); line-height:1.65; }
+.archstack { display:flex; flex-direction:column; align-items:center; }
+.arch-layer { width:100%; max-width:680px; background:var(--surface-container); border:1px solid var(--outline-variant); border-radius:var(--radius); padding:16px 20px; transition:box-shadow .18s,transform .18s; }
+.arch-layer:hover { box-shadow:var(--elev-1); }
+.arch-layer--accent { border:1.5px solid var(--primary); background:linear-gradient(135deg,var(--primary-container),var(--secondary-container)); box-shadow:var(--elev-2); }
+.arch-layer__head { display:flex; align-items:center; gap:12px; }
+.arch-layer__icon { font-size:26px; color:var(--primary); flex:0 0 auto; }
+.arch-layer--accent .arch-layer__icon { color:var(--on-primary-container); }
+.arch-layer__titles { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.arch-layer__name { font-weight:700; font-size:1.05rem; color:var(--on-surface); }
+.arch-layer--accent .arch-layer__name { color:var(--on-primary-container); }
+.arch-layer__role { font-size:.85rem; line-height:1.4; color:var(--on-surface-variant); }
+.arch-layer--accent .arch-layer__role { color:var(--on-primary-container); opacity:.85; }
+.arch-layer__tag { margin-left:auto; flex:0 0 auto; align-self:flex-start; font-size:.7rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; background:var(--primary); color:var(--on-primary); padding:3px 10px; border-radius:var(--radius-lg); white-space:nowrap; }
+.arch-layer__items { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.arch-chip { font-size:.8rem; color:var(--on-surface-variant); background:var(--surface); border:1px solid var(--outline-variant); padding:4px 11px; border-radius:var(--radius-lg); }
+.arch-layer--accent .arch-chip { background:var(--surface); border-color:var(--primary); color:var(--on-surface); font-weight:600; }
+.arch-connector { height:26px; display:flex; align-items:center; justify-content:center; color:var(--outline); }
+.arch-connector .material-symbols-rounded { font-size:22px; }
+
+/* ---- Roadmap (role -> skills -> proficiency level) ---- */
+.lvl { font-size:.72rem; font-weight:700; padding:3px 10px; border-radius:var(--radius-lg); white-space:nowrap; letter-spacing:.02em; }
+.lvl--aware  { background:var(--surface-variant); color:var(--on-surface-variant); }
+.lvl--use    { background:var(--secondary-container); color:var(--on-secondary-container); }
+.lvl--build  { background:var(--primary); color:var(--on-primary); }
+.lvl--master { background:var(--tertiary); color:#fff; }
+.roadmap-legend { display:flex; flex-wrap:wrap; align-items:center; gap:14px; margin:0 0 22px; padding:14px 16px; background:var(--surface-container); border:1px solid var(--outline-variant); border-radius:var(--radius); }
+.roadmap-legend__label { font-size:.85rem; font-weight:600; color:var(--on-surface); }
+.legend-item { display:inline-flex; align-items:center; gap:6px; }
+.legend-note { font-size:.8rem; color:var(--on-surface-variant); }
+.role-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; align-items:start; }
+.role-card { background:var(--surface-container); border:1px solid var(--outline-variant); border-radius:var(--radius); padding:18px 20px; }
+.role-card__head { display:flex; gap:12px; align-items:flex-start; margin-bottom:6px; }
+.role-card__icon { font-size:28px; color:var(--primary); flex:0 0 auto; }
+.role-card__name { margin:0 0 4px; font-size:1.1rem; font-weight:700; color:var(--on-surface); }
+.role-card__goal { margin:0; font-size:.85rem; line-height:1.5; color:var(--on-surface-variant); }
+.skill-list { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; }
+.skill { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:10px 0; border-top:1px solid var(--outline-variant); }
+.skill__name { font-size:.92rem; font-weight:600; color:var(--on-surface); }
+.skill .lvl { margin-left:auto; }
+.skill__note { flex:1 1 100%; order:3; font-size:.78rem; line-height:1.45; color:var(--on-surface-variant); }
 
 /* ---- Kanban ---- */
 .kanban { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(240px,1fr); gap:14px; overflow-x:auto; padding-bottom:8px; }
