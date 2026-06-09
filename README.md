@@ -10,9 +10,9 @@
 
 | | |
 |---|---|
-| 🌐 網站 | <https://tingwei161803.github.io/ai-sandbox-system-design/> |
+| 🌐 網站 | <https://ai-sandbox-system-design.peteraim.com/> |
 
-> 直接點進去就能用，無需安裝。各子頁有獨立網址（例如 `…/isolation.html`），元件／隔離機制卡片支援 `#<slug>` 深連結，例如 <https://tingwei161803.github.io/ai-sandbox-system-design/isolation.html#seccomp-bpf>。
+> 直接點進去就能用，無需安裝。各子頁有獨立網址（例如 `…/isolation.html`），元件／隔離機制卡片支援 `#<slug>` 深連結，例如 <https://ai-sandbox-system-design.peteraim.com/isolation.html#seccomp-bpf>。
 
 ---
 
