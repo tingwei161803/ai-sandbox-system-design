@@ -53,7 +53,9 @@
 </head>
 <body data-page="dataflow">
   <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
-  <main id="page"></main>
+  <main id="page">
+<header class="page-head"><h1>任務生命週期 / 資料流</h1><p class="page-head__sub">從「送出程式碼」到「看到結果」之間發生的事。</p></header><ol class="timeline"><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 1 步</span><h3 class="tl-title">提交任務</h3><p class="tl-body">使用者在前端 UI 上傳程式碼、啟動沙盒。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 2 步</span><h3 class="tl-title">建立任務紀錄</h3><p class="tl-body">在資料庫建立一筆 Job 紀錄（Job ID + Status）；任務管理器監聽新任務。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 3 步</span><h3 class="tl-title">派送到節點</h3><p class="tl-body">任務管理器描述任務需求，並把它派送到沙盒執行層。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 4 步</span><h3 class="tl-title">隔離執行</h3><p class="tl-body">程式碼在 namespace、seccomp-BPF、cgroup 限額與 timeout 約束下執行 —— 每個面向都被框住。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 5 步</span><h3 class="tl-title">監控與紀錄</h3><p class="tl-body">監控層即時監看資源用量，記錄任何異常、告警或錯誤。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 6 步</span><h3 class="tl-title">回傳結果</h3><p class="tl-body">更新執行結果、存回 Sandbox、並呈現給使用者。</p></div></li></ol>
+</main>
 
   <script src="data/data.js"></script>
   <script src="assets/shell.js"></script>
