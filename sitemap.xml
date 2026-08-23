@@ -5,6 +5,9 @@
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/</loc>
+  </url>
+  <url>
     <loc>https://ai-sandbox-system-design.peteraim.com/architecture.html</loc>
   </url>
   <url>
@@ -17,13 +20,40 @@
     <loc>https://ai-sandbox-system-design.peteraim.com/design.html</loc>
   </url>
   <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/architecture.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/components.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/dataflow.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/design.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/flashcards.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/glossary.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/isolation.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/quiz.html</loc>
+  </url>
+  <url>
+    <loc>https://ai-sandbox-system-design.peteraim.com/en/roles.html</loc>
+  </url>
+  <url>
     <loc>https://ai-sandbox-system-design.peteraim.com/flashcards.html</loc>
   </url>
   <url>
     <loc>https://ai-sandbox-system-design.peteraim.com/glossary.html</loc>
-  </url>
-  <url>
-    <loc>https://ai-sandbox-system-design.peteraim.com/</loc>
   </url>
   <url>
     <loc>https://ai-sandbox-system-design.peteraim.com/isolation.html</loc>

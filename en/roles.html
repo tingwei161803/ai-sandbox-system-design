@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Learning Paths by Role · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="想參與打造 AI Sandbox 這樣的系統？各角色（架構師、後端/平台、安全、DevOps/SRE、前端）要學的技能與該學到的程度（了解／會用／實作／精通）。" />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/roles.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/roles.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/roles.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/roles.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="角色學習地圖 · AI Sandbox 安全沙盒架構" />
+  <meta property="og:description" content="想參與打造 AI Sandbox 這樣的系統？各角色（架構師、後端/平台、安全、DevOps/SRE、前端）要學的技能與該學到的程度（了解／會用／實作／精通）。" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/roles.html" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="角色學習地圖 · AI Sandbox 安全沙盒架構" />
+  <meta name="twitter:description" content="想參與打造 AI Sandbox 這樣的系統？各角色（架構師、後端/平台、安全、DevOps/SRE、前端）要學的技能與該學到的程度（了解／會用／實作／精通）。" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "角色學習地圖 · AI Sandbox 安全沙盒架構",
+    "url": "https://ai-sandbox-system-design.peteraim.com/roles.html",
+    "description": "想參與打造 AI Sandbox 這樣的系統？各角色（架構師、後端/平台、安全、DevOps/SRE、前端）要學的技能與該學到的程度（了解／會用／實作／精通）。",
+    "inLanguage": ["zh-Hant", "en"],
+    "isPartOf": { "@type": "WebSite", "name": "AI Sandbox 安全沙盒架構", "url": "https://ai-sandbox-system-design.peteraim.com/" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="roles">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>Learning Paths by Role</h1><p class="page-head__sub">Want to help build a system like this? Here's what each role learns — and to what depth.</p></header><p class="arch-intro">Pick the role you want to grow into, then read down its skills. The badge on each skill says how deep you need to go: just understand it, be able to use it, build it from scratch, or master it.</p><div class="roadmap-legend"><span class="roadmap-legend__label">Depth:</span><span class="legend-item"><span class="lvl lvl--aware">Aware</span><span class="legend-note">grasp the concept &amp; trade-offs</span></span><span class="legend-item"><span class="lvl lvl--use">Use</span><span class="legend-note">use existing tools to get it done</span></span><span class="legend-item"><span class="lvl lvl--build">Build</span><span class="legend-note">build, debug &amp; integrate it yourself</span></span><span class="legend-item"><span class="lvl lvl--master">Master</span><span class="legend-note">design, optimize &amp; teach it</span></span></div><div class="role-grid"><section class="role-card" data-item=""><div class="role-card__head"><span class="material-symbols-rounded role-card__icon" aria-hidden="true">architecture</span><div><h2 class="role-card__name">System Architect</h2><p class="role-card__goal">Design the whole secure, scalable system and its trade-offs.</p></div></div><ul class="skill-list"><li class="skill"><span class="skill__name">System design &amp; trade-offs</span><span class="lvl lvl--master">Master</span></li><li class="skill"><span class="skill__name">Isolation model (namespace / seccomp / cgroup)</span><span class="lvl lvl--build">Build</span><span class="skill__note">deep enough to choose the right mix</span></li><li class="skill"><span class="skill__name">Distributed systems &amp; scaling (control vs data plane)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Threat modeling</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">Container vs microVM trade-offs (gVisor / Firecracker)</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">Observability by design</span><span class="lvl lvl--use">Use</span></li></ul></section><section class="role-card" data-item=""><div class="role-card__head"><span class="material-symbols-rounded role-card__icon" aria-hidden="true">terminal</span><div><h2 class="role-card__name">Backend / Platform Engineer</h2><p class="role-card__goal">Build the Job Manager and the Sandbox Executor.</p></div></div><ul class="skill-list"><li class="skill"><span class="skill__name">Linux systems programming (processes, syscalls)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Namespace / cgroup APIs (clone, unshare, cgroupfs)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Writing seccomp-BPF filters</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Job queue &amp; scheduling</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Container runtimes (runc / containerd)</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">Go / Rust / C (at least one)</span><span class="lvl lvl--build">Build</span></li></ul></section><section class="role-card" data-item=""><div class="role-card__head"><span class="material-symbols-rounded role-card__icon" aria-hidden="true">shield_person</span><div><h2 class="role-card__name">Security Engineer</h2><p class="role-card__goal">Harden isolation, model threats and stop sandbox escapes.</p></div></div><ul class="skill-list"><li class="skill"><span class="skill__name">Linux security model (capabilities, LSM, seccomp)</span><span class="lvl lvl--master">Master</span></li><li class="skill"><span class="skill__name">Sandbox escapes &amp; attack surface</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Policy: seccomp / AppArmor / SELinux</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Threat modeling &amp; red-teaming</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">microVM isolation (Firecracker / KVM)</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">Vulnerability research &amp; CVE tracking</span><span class="lvl lvl--use">Use</span></li></ul></section><section class="role-card" data-item=""><div class="role-card__head"><span class="material-symbols-rounded role-card__icon" aria-hidden="true">cloud_sync</span><div><h2 class="role-card__name">DevOps / SRE</h2><p class="role-card__goal">Deploy, scale, monitor and stay on-call for the platform.</p></div></div><ul class="skill-list"><li class="skill"><span class="skill__name">Container orchestration (Kubernetes)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">CI/CD &amp; Infrastructure as Code (Terraform)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Observability (metrics / logs / alerts)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">cgroup resource quota tuning</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">Autoscaling execution nodes</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Incident response &amp; on-call</span><span class="lvl lvl--use">Use</span></li></ul></section><section class="role-card" data-item=""><div class="role-card__head"><span class="material-symbols-rounded role-card__icon" aria-hidden="true">web</span><div><h2 class="role-card__name">Frontend Engineer</h2><p class="role-card__goal">Build the UI for upload, launch and result display.</p></div></div><ul class="skill-list"><li class="skill"><span class="skill__name">HTML / CSS / JavaScript fundamentals</span><span class="lvl lvl--master">Master</span></li><li class="skill"><span class="skill__name">A frontend framework (React / Vue)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Live updates (WebSocket / SSE for job status)</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">REST API integration</span><span class="lvl lvl--build">Build</span></li><li class="skill"><span class="skill__name">Frontend security (XSS, output escaping)</span><span class="lvl lvl--use">Use</span></li><li class="skill"><span class="skill__name">UX &amp; accessibility</span><span class="lvl lvl--use">Use</span></li></ul></section></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/roles.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>

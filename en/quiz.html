@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quick Quiz · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="用六題隨堂測驗檢驗你對 AI Sandbox 安全沙盒架構的理解（分數只活在當前 session）。" />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/quiz.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/quiz.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/quiz.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/quiz.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="隨堂測驗 · AI Sandbox 安全沙盒架構" />
+  <meta property="og:description" content="用六題隨堂測驗檢驗你對 AI Sandbox 安全沙盒架構的理解（分數只活在當前 session）。" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/quiz.html" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="隨堂測驗 · AI Sandbox 安全沙盒架構" />
+  <meta name="twitter:description" content="用六題隨堂測驗檢驗你對 AI Sandbox 安全沙盒架構的理解（分數只活在當前 session）。" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "隨堂測驗 · AI Sandbox 安全沙盒架構",
+    "url": "https://ai-sandbox-system-design.peteraim.com/quiz.html",
+    "description": "用六題隨堂測驗檢驗你對 AI Sandbox 安全沙盒架構的理解（分數只活在當前 session）。",
+    "inLanguage": ["zh-Hant", "en"],
+    "isPartOf": { "@type": "WebSite", "name": "AI Sandbox 安全沙盒架構", "url": "https://ai-sandbox-system-design.peteraim.com/" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="quiz">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>Quick Quiz</h1><p class="page-head__sub">Six questions on the architecture. Score is session-only — refresh to reset.</p></header><div class="quiz-score" aria-live="polite"><span class="quiz-score__label">Score</span> <b id="quizScoreVal">0 / 6</b></div><div class="quiz" id="quiz"><div class="quiz-card" data-item="" data-qi="0"><div class="quiz-q"><span class="quiz-num">1</span><span>Which layer actually runs the untrusted code?</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">Frontend UI</button><button class="quiz-opt" type="button" data-o="1">Database</button><button class="quiz-opt" type="button" data-o="2">Sandbox Executor</button><button class="quiz-opt" type="button" data-o="3">Monitoring &amp; Logs</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="1"><div class="quiz-q"><span class="quiz-num">2</span><span>What do Linux namespaces primarily control?</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">How much CPU/memory a process can use</button><button class="quiz-opt" type="button" data-o="1">What a process can see and interact with</button><button class="quiz-opt" type="button" data-o="2">How long a process may run</button><button class="quiz-opt" type="button" data-o="3">Which user owns the files</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="2"><div class="quiz-q"><span class="quiz-num">3</span><span>Seccomp-BPF works by…</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">Encrypting all syscalls</button><button class="quiz-opt" type="button" data-o="1">Filtering syscalls before they run</button><button class="quiz-opt" type="button" data-o="2">Limiting the number of processes</button><button class="quiz-opt" type="button" data-o="3">Giving each job its own kernel</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="3"><div class="quiz-q"><span class="quiz-num">4</span><span>Which cgroup controller defuses a fork bomb?</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">cpu</button><button class="quiz-opt" type="button" data-o="1">memory</button><button class="quiz-opt" type="button" data-o="2">io</button><button class="quiz-opt" type="button" data-o="3">pids</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="4"><div class="quiz-q"><span class="quiz-num">5</span><span>Why route jobs, results and logs through a shared database?</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">To make the UI faster to style</button><button class="quiz-opt" type="button" data-o="1">To decouple the layers so they scale independently</button><button class="quiz-opt" type="button" data-o="2">Because the kernel requires it</button><button class="quiz-opt" type="button" data-o="3">To avoid using namespaces</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="5"><div class="quiz-q"><span class="quiz-num">6</span><span>What does the Timeout control protect against?</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">Code that hangs or loops forever and squats on resources</button><button class="quiz-opt" type="button" data-o="1">Weak passwords</button><button class="quiz-opt" type="button" data-o="2">Disk fragmentation</button><button class="quiz-opt" type="button" data-o="3">Slow network cables</button></div><div class="quiz-explain" hidden=""></div></div></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/quiz.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>

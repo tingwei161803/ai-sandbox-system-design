@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>任務生命週期 / 資料流 · AI Sandbox 安全沙盒架構</title>
+  <title>Task Lifecycle · AI Sandbox Architecture</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
@@ -17,7 +17,7 @@
   <meta name="description" content="AI Sandbox 任務生命週期：從提交程式碼、建立任務、派送節點、隔離執行、監控到回傳結果的資料流。" />
   <meta name="theme-color" content="#0B66C2" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
-  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/dataflow.html" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/dataflow.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/dataflow.html" />
   <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/dataflow.html" />
   <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/dataflow.html" />
@@ -26,7 +26,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="任務生命週期 / 資料流 · AI Sandbox 安全沙盒架構" />
   <meta property="og:description" content="AI Sandbox 任務生命週期：從提交程式碼、建立任務、派送節點、隔離執行、監控到回傳結果的資料流。" />
-  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/dataflow.html" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/dataflow.html" />
   <meta property="og:locale" content="zh_TW" />
   <meta property="og:locale:alternate" content="en_US" />
 
@@ -52,17 +52,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body data-page="dataflow">
   <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
   <main id="page">
-<header class="page-head"><h1>任務生命週期 / 資料流</h1><p class="page-head__sub">從「送出程式碼」到「看到結果」之間發生的事。</p></header><ol class="timeline"><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 1 步</span><h3 class="tl-title">提交任務</h3><p class="tl-body">使用者在前端 UI 上傳程式碼、啟動沙盒。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 2 步</span><h3 class="tl-title">建立任務紀錄</h3><p class="tl-body">在資料庫建立一筆 Job 紀錄（Job ID + Status）；任務管理器監聽新任務。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 3 步</span><h3 class="tl-title">派送到節點</h3><p class="tl-body">任務管理器描述任務需求，並把它派送到沙盒執行層。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 4 步</span><h3 class="tl-title">隔離執行</h3><p class="tl-body">程式碼在 namespace、seccomp-BPF、cgroup 限額與 timeout 約束下執行 —— 每個面向都被框住。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 5 步</span><h3 class="tl-title">監控與紀錄</h3><p class="tl-body">監控層即時監看資源用量，記錄任何異常、告警或錯誤。</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">第 6 步</span><h3 class="tl-title">回傳結果</h3><p class="tl-body">更新執行結果、存回 Sandbox、並呈現給使用者。</p></div></li></ol>
+<header class="page-head"><h1>Task Lifecycle</h1><p class="page-head__sub">What happens between 'submit code' and 'see results'.</p></header><ol class="timeline"><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 1</span><h3 class="tl-title">Submit</h3><p class="tl-body">The user uploads code and launches a sandbox from the Frontend UI.</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 2</span><h3 class="tl-title">Persist the job</h3><p class="tl-body">A Job record (Job ID + Status) is written to the database; the Job Manager listens for new work.</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 3</span><h3 class="tl-title">Dispatch to a node</h3><p class="tl-body">The Job Manager describes the task's requirements and dispatches it to the Sandbox Executor.</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 4</span><h3 class="tl-title">Isolated execution</h3><p class="tl-body">The code runs under namespaces, seccomp-BPF, cgroup limits and a timeout — contained on every axis.</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 5</span><h3 class="tl-title">Monitor &amp; log</h3><p class="tl-body">Monitoring watches resource usage live and records any anomalies, alerts or errors.</p></div></li><li class="tl-item" data-item=""><div class="tl-dot" aria-hidden="true"></div><div class="tl-card"><span class="tl-date">Step 6</span><h3 class="tl-title">Return results</h3><p class="tl-body">Execution results are updated, written back to the sandbox store, and rendered to the user.</p></div></li></ol>
 </main>
 
-  <script src="data/data.js"></script>
-  <script src="assets/shell.js"></script>
-  <script src="assets/app.js"></script>
-<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/en/dataflow.html" hreflang="en" rel="alternate" lang="en">English version</a></p>
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/dataflow.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
 </body>
 </html>

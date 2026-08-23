@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Glossary · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="AI Sandbox 技術術語速查：Namespace、Cgroup、Seccomp-BPF、TOCTOU、microVM 等名詞解釋。" />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/glossary.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/glossary.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/glossary.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/glossary.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="技術術語速查 · AI Sandbox 安全沙盒架構" />
+  <meta property="og:description" content="AI Sandbox 技術術語速查：Namespace、Cgroup、Seccomp-BPF、TOCTOU、microVM 等名詞解釋。" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/glossary.html" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="技術術語速查 · AI Sandbox 安全沙盒架構" />
+  <meta name="twitter:description" content="AI Sandbox 技術術語速查：Namespace、Cgroup、Seccomp-BPF、TOCTOU、microVM 等名詞解釋。" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "技術術語速查 · AI Sandbox 安全沙盒架構",
+    "url": "https://ai-sandbox-system-design.peteraim.com/glossary.html",
+    "description": "AI Sandbox 技術術語速查：Namespace、Cgroup、Seccomp-BPF、TOCTOU、microVM 等名詞解釋。",
+    "inLanguage": ["zh-Hant", "en"],
+    "isPartOf": { "@type": "WebSite", "name": "AI Sandbox 安全沙盒架構", "url": "https://ai-sandbox-system-design.peteraim.com/" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="glossary">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>Glossary</h1><p class="page-head__sub">Search the terms used across this site.</p></header><div class="toolbar"><input id="search" class="search" type="search" autocomplete="off" placeholder="Search terms…" aria-label="Search terms"></div><p class="result-count" id="resultCount" aria-live="polite">18 term(s)</p><div class="glossary" id="glossary"><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Sandbox</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">An isolated environment for running untrusted code so it can't affect anything outside it.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Namespace</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">A Linux kernel feature that gives a process its own private view of a system resource (processes, network, filesystem, hostname…).</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>PID namespace</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Isolates the process-ID number space; the first process inside is PID 1 and cannot see host processes.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Network namespace</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Gives a process its own isolated network stack, devices and ports.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Mount namespace</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Provides an isolated view of the filesystem mount points.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>UTS namespace</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Isolates the hostname and NIS domain name.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Cgroup (control group)</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Limits and accounts for the resources a group of processes can use — CPU, memory, I/O, process count.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Seccomp-BPF</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">A kernel facility that filters system calls with a BPF program, rejecting forbidden ones before they run.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Syscall (system call)</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">The interface a program uses to ask the kernel to do something privileged (open a file, send a packet…).</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>BPF</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Berkeley Packet Filter — a tiny in-kernel program format; seccomp uses it to evaluate syscalls.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>TOCTOU</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Time-of-check to time-of-use: a race where a value changes between validation and use. Seccomp-BPF avoids it by not dereferencing pointers.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>OOM killer</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">The kernel routine that terminates a process when memory runs out; a cgroup's memory.max can trigger it locally.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Fork bomb</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">An attack that spawns processes endlessly to exhaust the system; the cgroup pids controller caps it.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Attack surface</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">The set of points where an attacker can try to interact with a system; restricting syscalls shrinks it.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>microVM</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">A lightweight virtual machine with minimal device emulation, giving each workload its own kernel (e.g. Firecracker).</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Defense in depth</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">Stacking multiple independent controls so an attacker must defeat all of them, not just one.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Job Manager</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">The orchestrator that dispatches tasks to execution nodes, monitors them, and returns results.</div></details><details class="gloss-item" data-item=""><summary class="gloss-term"><span>Control plane / Data plane</span><span class="material-symbols-rounded gloss-chevron" aria-hidden="true">expand_more</span></summary><div class="gloss-def">The control plane decides what runs (UI, DB, Job Manager); the data plane runs it (execution nodes). Splitting them enables scaling.</div></details></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/glossary.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>

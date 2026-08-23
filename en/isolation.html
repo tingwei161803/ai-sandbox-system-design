@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-theme="light">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <title>沙盒隔離機制 · AI Sandbox 安全沙盒架構</title>
+  <title>Isolation Mechanisms · AI Sandbox Architecture</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
@@ -17,7 +17,7 @@
   <meta name="description" content="AI Sandbox 四道核心層級隔離：Linux Namespace、Seccomp-BPF、Cgroup 資源限制與 Timeout 控制。" />
   <meta name="theme-color" content="#0B66C2" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
-  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/isolation.html" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/isolation.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/isolation.html" />
   <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/isolation.html" />
   <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/isolation.html" />
@@ -26,7 +26,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="沙盒隔離機制 · AI Sandbox 安全沙盒架構" />
   <meta property="og:description" content="AI Sandbox 四道核心層級隔離：Linux Namespace、Seccomp-BPF、Cgroup 資源限制與 Timeout 控制。" />
-  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/isolation.html" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/isolation.html" />
   <meta property="og:locale" content="zh_TW" />
   <meta property="og:locale:alternate" content="en_US" />
 
@@ -52,17 +52,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body data-page="isolation">
   <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
   <main id="page">
-<header class="page-head"><h1>沙盒隔離機制</h1><p class="page-head__sub">沙盒執行層裡的四道核心層級控制。點開看細節。</p></header><div class="toolbar"><input id="search" class="search" type="search" autocomplete="off" placeholder="搜尋…" aria-label="搜尋"><div class="chips"><button class="chip chip--active" type="button" data-cat="">全部</button><button class="chip" type="button" data-cat="namespace">可見範圍</button><button class="chip" type="button" data-cat="syscall">系統呼叫</button><button class="chip" type="button" data-cat="resource">資源</button><button class="chip" type="button" data-cat="lifecycle">生命週期</button></div></div><p class="result-count" id="resultCount" aria-live="polite">4 筆結果</p><div class="grid" id="grid"><article class="card" tabindex="0" role="button" data-item="" data-slug="linux-namespace" aria-label="Linux Namespace 隔離"><h3 class="card__title">Linux Namespace 隔離</h3><p class="card__summary">隔離行程「看得到什麼」—— PID／Network／Mount／UTS 等。</p><div class="card__tags"><span class="tag">PID</span><span class="tag">Network</span><span class="tag">Mount</span><span class="tag">UTS</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="seccomp-bpf" aria-label="Seccomp-BPF 系統呼叫限制"><h3 class="card__title">Seccomp-BPF 系統呼叫限制</h3><p class="card__summary">系統呼叫防火牆：在禁止的 syscall 執行前就攔下。</p><div class="card__tags"><span class="tag">syscall</span><span class="tag">BPF</span><span class="tag">attack-surface</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="cgroup" aria-label="Cgroup 資源限制"><h3 class="card__title">Cgroup 資源限制</h3><p class="card__summary">限制行程「能用多少」—— CPU／Memory／I/O／PIDs。</p><div class="card__tags"><span class="tag">CPU</span><span class="tag">Memory</span><span class="tag">I/O</span><span class="tag">PIDs</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="timeout" aria-label="Timeout 控制"><h3 class="card__title">Timeout 控制</h3><p class="card__summary">砍掉失控任務，避免有東西永久佔著資源。</p><div class="card__tags"><span class="tag">wall-clock</span><span class="tag">auto-kill</span><span class="tag">cleanup</span></div></article></div>
+<header class="page-head"><h1>Isolation Mechanisms</h1><p class="page-head__sub">The four kernel-level controls inside the Sandbox Executor. Click for detail.</p></header><div class="toolbar"><input id="search" class="search" type="search" autocomplete="off" placeholder="Search…" aria-label="Search"><div class="chips"><button class="chip chip--active" type="button" data-cat="">All</button><button class="chip" type="button" data-cat="namespace">Visibility</button><button class="chip" type="button" data-cat="syscall">Syscalls</button><button class="chip" type="button" data-cat="resource">Resources</button><button class="chip" type="button" data-cat="lifecycle">Lifecycle</button></div></div><p class="result-count" id="resultCount" aria-live="polite">4 result(s)</p><div class="grid" id="grid"><article class="card" tabindex="0" role="button" data-item="" data-slug="linux-namespace" aria-label="Linux Namespace"><h3 class="card__title">Linux Namespace</h3><p class="card__summary">Isolates what a process can SEE — PID / Network / Mount / UTS and more.</p><div class="card__tags"><span class="tag">PID</span><span class="tag">Network</span><span class="tag">Mount</span><span class="tag">UTS</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="seccomp-bpf" aria-label="Seccomp-BPF"><h3 class="card__title">Seccomp-BPF</h3><p class="card__summary">A syscall firewall: rejects forbidden system calls before they run.</p><div class="card__tags"><span class="tag">syscall</span><span class="tag">BPF</span><span class="tag">attack-surface</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="cgroup" aria-label="Cgroups"><h3 class="card__title">Cgroups</h3><p class="card__summary">Caps how MUCH a process can use — CPU / Memory / I/O / PIDs.</p><div class="card__tags"><span class="tag">CPU</span><span class="tag">Memory</span><span class="tag">I/O</span><span class="tag">PIDs</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="timeout" aria-label="Timeout control"><h3 class="card__title">Timeout control</h3><p class="card__summary">Kills runaway jobs so nothing squats on resources forever.</p><div class="card__tags"><span class="tag">wall-clock</span><span class="tag">auto-kill</span><span class="tag">cleanup</span></div></article></div>
 </main>
 
-  <script src="data/data.js"></script>
-  <script src="assets/shell.js"></script>
-  <script src="assets/app.js"></script>
-<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/en/isolation.html" hreflang="en" rel="alternate" lang="en">English version</a></p>
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/isolation.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
 </body>
 </html>

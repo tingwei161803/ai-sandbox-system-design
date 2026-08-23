@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Core Components · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="AI Sandbox 五大核心元件：前端 UI、資料庫、任務管理器、沙盒執行層、監控與日誌的職責與細節。" />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/components.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/components.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/components.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/components.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="核心元件 · AI Sandbox 安全沙盒架構" />
+  <meta property="og:description" content="AI Sandbox 五大核心元件：前端 UI、資料庫、任務管理器、沙盒執行層、監控與日誌的職責與細節。" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/components.html" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="核心元件 · AI Sandbox 安全沙盒架構" />
+  <meta name="twitter:description" content="AI Sandbox 五大核心元件：前端 UI、資料庫、任務管理器、沙盒執行層、監控與日誌的職責與細節。" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "核心元件 · AI Sandbox 安全沙盒架構",
+    "url": "https://ai-sandbox-system-design.peteraim.com/components.html",
+    "description": "AI Sandbox 五大核心元件：前端 UI、資料庫、任務管理器、沙盒執行層、監控與日誌的職責與細節。",
+    "inLanguage": ["zh-Hant", "en"],
+    "isPartOf": { "@type": "WebSite", "name": "AI Sandbox 安全沙盒架構", "url": "https://ai-sandbox-system-design.peteraim.com/" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="components">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>Core Components</h1><p class="page-head__sub">The five building blocks. Click any card for detail.</p></header><div class="toolbar"><input id="search" class="search" type="search" autocomplete="off" placeholder="Search…" aria-label="Search"><div class="chips"><button class="chip chip--active" type="button" data-cat="">All</button><button class="chip" type="button" data-cat="interface">Interface</button><button class="chip" type="button" data-cat="data">Data</button><button class="chip" type="button" data-cat="control">Control</button><button class="chip" type="button" data-cat="execution">Execution</button><button class="chip" type="button" data-cat="observability">Observability</button></div></div><p class="result-count" id="resultCount" aria-live="polite">5 result(s)</p><div class="grid" id="grid"><article class="card" tabindex="0" role="button" data-item="" data-slug="frontend-ui" aria-label="Frontend UI"><h3 class="card__title">Frontend UI</h3><p class="card__summary">Where users upload code, launch a sandbox and read the results.</p><div class="card__tags"><span class="tag">upload</span><span class="tag">launch</span><span class="tag">results</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="database" aria-label="Database"><h3 class="card__title">Database</h3><p class="card__summary">Temporary store and result store: jobs, results and logs.</p><div class="card__tags"><span class="tag">jobs</span><span class="tag">results</span><span class="tag">logs</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="job-manager" aria-label="Job Manager"><h3 class="card__title">Job Manager</h3><p class="card__summary">Dispatches tasks to nodes, watches them, returns results.</p><div class="card__tags"><span class="tag">dispatch</span><span class="tag">monitor</span><span class="tag">scale</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="sandbox-executor" aria-label="Sandbox Executor"><h3 class="card__title">Sandbox Executor</h3><p class="card__summary">The security core: namespaces, seccomp-BPF, cgroups and timeout.</p><div class="card__tags"><span class="tag">namespace</span><span class="tag">seccomp</span><span class="tag">cgroup</span><span class="tag">timeout</span></div></article><article class="card" tabindex="0" role="button" data-item="" data-slug="monitoring" aria-label="Monitoring &amp; Logs"><h3 class="card__title">Monitoring &amp; Logs</h3><p class="card__summary">Live resource monitoring, anomaly alerts and execution-log queries.</p><div class="card__tags"><span class="tag">metrics</span><span class="tag">alerts</span><span class="tag">audit</span></div></article></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/components.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>

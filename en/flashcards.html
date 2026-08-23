@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flashcards · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="用翻卡複習 AI Sandbox 的核心術語與概念：正面術語、背面解釋。" />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/flashcards.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/flashcards.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/flashcards.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/flashcards.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="字卡 / 翻卡 · AI Sandbox 安全沙盒架構" />
+  <meta property="og:description" content="用翻卡複習 AI Sandbox 的核心術語與概念：正面術語、背面解釋。" />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/flashcards.html" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="字卡 / 翻卡 · AI Sandbox 安全沙盒架構" />
+  <meta name="twitter:description" content="用翻卡複習 AI Sandbox 的核心術語與概念：正面術語、背面解釋。" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "字卡 / 翻卡 · AI Sandbox 安全沙盒架構",
+    "url": "https://ai-sandbox-system-design.peteraim.com/flashcards.html",
+    "description": "用翻卡複習 AI Sandbox 的核心術語與概念：正面術語、背面解釋。",
+    "inLanguage": ["zh-Hant", "en"],
+    "isPartOf": { "@type": "WebSite", "name": "AI Sandbox 安全沙盒架構", "url": "https://ai-sandbox-system-design.peteraim.com/" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="flashcards">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>Flashcards</h1><p class="page-head__sub">Tap a card to flip it. Term on the front, meaning on the back.</p></header><div class="flip-grid" id="flips"><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Namespace</span></div><div class="flip__face flip__back"><span>Isolates WHAT a process can see (PID / network / mount / UTS).</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Cgroup</span></div><div class="flip__face flip__back"><span>Caps HOW MUCH a process can use (CPU / memory / I/O / PIDs).</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Seccomp-BPF</span></div><div class="flip__face flip__back"><span>Filters which syscalls a process may make — before they run.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Timeout</span></div><div class="flip__face flip__back"><span>Caps HOW LONG a job may run; kills runaways.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Sandbox Executor</span></div><div class="flip__face flip__back"><span>The security core where untrusted code actually runs.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Job Manager</span></div><div class="flip__face flip__back"><span>Dispatches tasks to nodes, monitors them, returns results.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Database role</span></div><div class="flip__face flip__back"><span>Holds Jobs, Results and Logs — the shared source of truth.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>OOM killer</span></div><div class="flip__face flip__back"><span>Kills a process when memory runs out; cgroup memory.max can trigger it.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>TOCTOU</span></div><div class="flip__face flip__back"><span>Check-to-use race; seccomp-BPF avoids it by not dereferencing pointers.</span></div></div></button><button class="flip" type="button" data-item="" aria-pressed="false"><div class="flip__inner"><div class="flip__face flip__front"><span>Defense in depth</span></div><div class="flip__face flip__back"><span>Four independent walls — an attacker must beat all of them.</span></div></div></button></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/flashcards.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>
