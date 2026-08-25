@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>System Architecture · AI Sandbox Architecture</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FLCLD4E7WX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FLCLD4E7WX');
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Five layers, top to bottom — from the browser down to the kernel-level sandbox." />
+  <meta name="theme-color" content="#0B66C2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
+  <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/en/architecture.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/architecture.html" />
+  <link rel="alternate" hreflang="en" href="https://ai-sandbox-system-design.peteraim.com/en/architecture.html" />
+  <link rel="alternate" hreflang="x-default" href="https://ai-sandbox-system-design.peteraim.com/architecture.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="System Architecture · AI Sandbox Architecture" />
+  <meta property="og:description" content="Five layers, top to bottom — from the browser down to the kernel-level sandbox." />
+  <meta property="og:url" content="https://ai-sandbox-system-design.peteraim.com/en/architecture.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="System Architecture · AI Sandbox Architecture" />
+  <meta name="twitter:description" content="Five layers, top to bottom — from the browser down to the kernel-level sandbox." />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "System Architecture · AI Sandbox Architecture",
+    "url": "https://ai-sandbox-system-design.peteraim.com/en/architecture.html",
+    "description": "Five layers, top to bottom — from the browser down to the kernel-level sandbox.",
+    "inLanguage": "en",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "AI Sandbox Architecture",
+      "url": "https://ai-sandbox-system-design.peteraim.com/en/"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body data-page="architecture">
+  <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
+  <main id="page">
+<header class="page-head"><h1>System Architecture</h1><p class="page-head__sub">Five layers, top to bottom — from the browser down to the kernel-level sandbox.</p></header><p class="arch-intro">Data flows top to bottom: each layer hands off to the next, and the untrusted code only ever runs at the guarded core. Each layer has one job, so a failure (or a hostile workload) stays contained instead of spreading.</p><div class="archstack"><div class="arch-layer" data-item=""><div class="arch-layer__head"><span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">devices</span><div class="arch-layer__titles"><div class="arch-layer__name">Frontend UI</div><div class="arch-layer__role">Upload, launch, view results</div></div></div><div class="arch-layer__items"><span class="arch-chip">File upload</span><span class="arch-chip">Sandbox launch</span><span class="arch-chip">Result display</span></div></div><div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div><div class="arch-layer" data-item=""><div class="arch-layer__head"><span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">database</span><div class="arch-layer__titles"><div class="arch-layer__name">Database</div><div class="arch-layer__role">Temporary &amp; result store</div></div></div><div class="arch-layer__items"><span class="arch-chip">Job (ID / Status)</span><span class="arch-chip">Results</span><span class="arch-chip">Logs</span></div></div><div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div><div class="arch-layer" data-item=""><div class="arch-layer__head"><span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">manage_accounts</span><div class="arch-layer__titles"><div class="arch-layer__name">Job Manager</div><div class="arch-layer__role">Dispatch · monitor · return</div></div></div><div class="arch-layer__items"><span class="arch-chip">Dispatch to nodes</span><span class="arch-chip">Monitor status</span><span class="arch-chip">Return results</span><span class="arch-chip">Store to Sandbox</span></div></div><div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div><div class="arch-layer arch-layer--accent" data-item=""><div class="arch-layer__head"><span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">security</span><div class="arch-layer__titles"><div class="arch-layer__name">Sandbox Executor</div><div class="arch-layer__role">Runs untrusted code under four kernel-level controls</div></div><span class="arch-layer__tag">Security core</span></div><div class="arch-layer__items"><span class="arch-chip">Linux Namespace</span><span class="arch-chip">Seccomp-BPF</span><span class="arch-chip">Cgroups</span><span class="arch-chip">Timeout</span></div></div><div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div><div class="arch-layer" data-item=""><div class="arch-layer__head"><span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">monitor_heart</span><div class="arch-layer__titles"><div class="arch-layer__name">Monitoring &amp; Logs</div><div class="arch-layer__role">Observe everything, touch nothing</div></div></div><div class="arch-layer__items"><span class="arch-chip">Live resource metrics</span><span class="arch-chip">Anomaly alerts</span><span class="arch-chip">Log query</span></div></div></div>
+</main>
+
+  <script src="../data/data.js"></script>
+  <script src="../assets/shell.js"></script>
+  <script src="../assets/app.js"></script>
+<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/architecture.html" hreflang="zh-Hant" rel="alternate" lang="zh-Hant">中文版</a></p>
+</body>
+</html>

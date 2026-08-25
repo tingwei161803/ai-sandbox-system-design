@@ -13,13 +13,15 @@
 | 🌐 網站 | <https://ai-sandbox-system-design.peteraim.com/> |
 
 > 直接點進去就能用，無需安裝。各子頁有獨立網址（例如 `…/isolation.html`），元件／隔離機制卡片支援 `#<slug>` 深連結，例如 <https://ai-sandbox-system-design.peteraim.com/isolation.html#seccomp-bpf>。
+>
+> 英文版在 `/en/` 底下、檔名一一對應，例如 <https://ai-sandbox-system-design.peteraim.com/en/isolation.html>。
 
 ---
 
 ## ✨ 功能特色
 
 - 🧱 **多頁面架構** — 一個 hub 首頁 + 9 個共用 shell 的子頁，每頁有獨立 URL 與 SEO
-- 🌏 **雙語全頁切換** — 中文 / English 一鍵切換，整頁（含導覽、頁尾）即時重繪
+- 🌏 **一個語言一個網址** — 中文在 root、English 在 `/en/`，每頁兩種語言各有自己的網址，互相用 `hreflang` 標註；切換鈕是真正的連結
 - 🌗 **深色 / 淺色模式** — 手動切換，跨頁持久
 - 🔍 **即時搜尋與分類篩選** — 元件、隔離機制、術語皆可搜尋／依分類過濾
 - 🪟 **詳情對話框 + 深連結** — 卡片點開看細節，`#<slug>` 可直接分享到特定項目
@@ -54,6 +56,7 @@ ai-sandbox-system-design/
 ├── glossary.html       # 技術術語速查
 ├── quiz.html           # 隨堂測驗
 ├── flashcards.html     # 字卡 / 翻卡
+├── en/                 # 以上十頁的英文版，檔名一一對應（root 是中文）
 ├── assets/
 │   ├── styles.css      # Material Design 3 基底 + 各版型樣式
 │   ├── shell.js        # 共用 chrome（appbar / 跨頁導覽 / 頁尾 / dialog / 語言+主題）
