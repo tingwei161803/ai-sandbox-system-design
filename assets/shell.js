@@ -29,8 +29,10 @@
 
   /* ---------- chrome i18n (page content strings live in the data) ---------- */
   var I18N = {
-    en: { close: "Close", menu: "Pages", skip: "Skip to content" },
-    zh: { close: "關閉", menu: "頁面", skip: "跳到內容" }
+    en: { close: "Close", menu: "Pages", skip: "Skip to content",
+          groups: { architecture: "Architecture", learn: "Learn" } },
+    zh: { close: "關閉", menu: "頁面", skip: "跳到內容",
+          groups: { architecture: "架構", learn: "學習" } }
   };
 
   /* ---------- sandbox-safe localStorage ---------- */
@@ -121,8 +123,18 @@
     appbar.className = "appbar";
     appbar.innerHTML =
       '<div class="appbar__inner">' +
+        '<button class="icon-btn navtoggle" id="navToggle" type="button" aria-controls="pageNav" aria-expanded="false">' +
+          '<span class="material-symbols-rounded" aria-hidden="true">menu</span>' +
+          '<span class="navtoggle__txt" id="navToggleTxt"></span>' +
+        '</button>' +
         '<a class="brand" href="index.html">' +
-          '<span class="material-symbols-rounded brand__logo">hub</span>' +
+          /* the mark is the site's idea in miniature: code inside three walls */
+          '<svg class="brand__logo" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">' +
+            '<circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2.2"/>' +
+            '<circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+            '<circle cx="16" cy="16" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+            '<rect class="brand__core" x="13.5" y="13.5" width="5" height="5" rx="1"/>' +
+          '</svg>' +
           '<span class="brand__name" id="brandName"></span>' +
         '</a>' +
         '<div class="appbar__actions">' +
@@ -152,11 +164,19 @@
     nav.innerHTML = '<div class="pagenav__inner" id="pageNavInner"></div>';
     document.body.insertBefore(nav, main);
 
+    /* scrim behind the nav when it opens as a sheet on small screens */
+    var scrim = document.createElement("div");
+    scrim.className = "nav-scrim";
+    scrim.id = "navScrim";
+    scrim.hidden = true;
+    document.body.insertBefore(scrim, main);
+    document.body.classList.add("has-shell");
+
     /* footer */
     var footer = document.createElement("footer");
     footer.className = "footer";
-    footer.innerHTML = '<p id="footerText"></p>' +
-      '<div class="profile-links" style="display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px">' +
+    footer.innerHTML = '<p class="footer__text" id="footerText"></p>' +
+      '<div class="profile-links">' +
         '<a class="icon-btn" href="https://www.peteraim.com" target="_blank" rel="noopener" title="Home" aria-label="Back to peteraim.com / 返回首頁">' +
           '<span class="material-symbols-rounded">home</span>' +
         '</a>' +
@@ -199,22 +219,59 @@
     if (!inner) return;
     inner.innerHTML = "";
     var here = currentSlug();
+    var groups = [];
     PAGES.forEach(function (p) {
-      var a = document.createElement("a");
-      a.className = "navpill" + (p.slug === here ? " navpill--active" : "");
-      a.href = pageHref(p);
-      if (p.slug === here) a.setAttribute("aria-current", "page");
-      a.innerHTML =
-        '<span class="material-symbols-rounded" aria-hidden="true">' +
-          escapeHtml(p.icon || "label") + "</span>" +
-        "<span>" + escapeHtml(t(p.title)) + "</span>";
-      inner.appendChild(a);
+      var key = p.group || "architecture";
+      var g = groups.filter(function (x) { return x.key === key; })[0];
+      if (!g) { g = { key: key, pages: [] }; groups.push(g); }
+      g.pages.push(p);
     });
-    /* keep the active pill in view within the scrolling nav */
-    var active = inner.querySelector(".navpill--active");
-    if (active && active.scrollIntoView) {
-      active.scrollIntoView({ block: "nearest", inline: "center" });
+    var labels = ui("groups") || {};
+    groups.forEach(function (g) {
+      var sec = document.createElement("div");
+      sec.className = "navgroup";
+      var html = '<p class="navgroup__label" id="navgroup-' + escapeHtml(g.key) + '">' +
+        escapeHtml(labels[g.key] || g.key) + "</p>" +
+        '<ul class="navgroup__list" aria-labelledby="navgroup-' + escapeHtml(g.key) + '">';
+      g.pages.forEach(function (p) {
+        var on = p.slug === here;
+        html += '<li><a class="navlink' + (on ? " navlink--active" : "") + '" href="' + escapeHtml(pageHref(p)) + '"' +
+          (on ? ' aria-current="page"' : "") + ">" +
+          '<span class="material-symbols-rounded" aria-hidden="true">' + escapeHtml(p.icon || "label") + "</span>" +
+          "<span>" + escapeHtml(t(p.title)) + "</span></a></li>";
+      });
+      sec.innerHTML = html + "</ul>";
+      inner.appendChild(sec);
+    });
+  }
+
+  /* ---------- small screens: the nav opens as a bottom sheet ---------- */
+  function setNavOpen(open) {
+    var btn = document.getElementById("navToggle");
+    var scrim = document.getElementById("navScrim");
+    document.body.classList.toggle("nav-open", open);
+    if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (scrim) scrim.hidden = !open;
+    if (open) {
+      var first = document.querySelector("#pageNav .navlink--active") || document.querySelector("#pageNav .navlink");
+      if (first) first.focus();
     }
+  }
+  function wireNav() {
+    var btn = document.getElementById("navToggle");
+    var scrim = document.getElementById("navScrim");
+    if (btn) btn.addEventListener("click", function () {
+      setNavOpen(!document.body.classList.contains("nav-open"));
+    });
+    if (scrim) scrim.addEventListener("click", function () { setNavOpen(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && document.body.classList.contains("nav-open")) {
+        setNavOpen(false);
+        if (btn) btn.focus();
+      }
+    });
+    var mq = window.matchMedia ? window.matchMedia("(min-width: 1024px)") : null;
+    if (mq && mq.addEventListener) mq.addEventListener("change", function () { setNavOpen(false); });
   }
 
   /* ---------- chrome text in the active language ---------- */
@@ -225,7 +282,16 @@
     document.title = (pageTitle && currentSlug() !== "home") ? pageTitle + " · " + siteTitle : siteTitle;
 
     var brand = document.getElementById("brandName");
-    if (brand) brand.textContent = siteTitle;
+    if (brand) {
+      /* "AI Sandbox" always shows; the rest of the name drops on narrow screens */
+      var head = siteTitle.indexOf("AI Sandbox") === 0 ? "AI Sandbox" : siteTitle;
+      brand.innerHTML = "<b>" + escapeHtml(head) + "</b>" +
+        (siteTitle.length > head.length ? '<span class="brand__rest">' + escapeHtml(siteTitle.slice(head.length)) + "</span>" : "");
+    }
+    var navTxt = document.getElementById("navToggleTxt");
+    if (navTxt) navTxt.textContent = ui("menu");
+    var navBtn = document.getElementById("navToggle");
+    if (navBtn) navBtn.setAttribute("aria-label", ui("menu"));
     var foot = document.getElementById("footerText");
     if (foot) foot.textContent = t(META.footer);
     var skip = document.getElementById("skipLink");
@@ -269,33 +335,31 @@
   }
 
   /* ---------- live GitHub star count (no auth; degrades silently) ----------
-     The unauthenticated API allows 60 calls an hour per IP, and every page view
-     used to spend one. The result (including a failure, stored as 0) is cached
-     for the session, and the number only appears when there is a real count —
-     a 403 or a 0 leaves just the star icon instead of "0" or a placeholder. */
+     api.github.com allows 60 unauthenticated calls an hour per IP and answers
+     403 after that, which showed up as "0" and as a console error. shields.io
+     serves the same count as JSON with CORS and its own caching, so visitors
+     never hit that limit. The answer (or a failure, stored as "") is kept for
+     the session, and a number appears only when there is a real one. */
   var STAR_KEY = "gh-stars:" + REPO;
-  function fmtStars(n) {
-    if (n >= 1000) return (Math.round(n / 100) / 10) + "k";
-    return String(n);
-  }
-  function showStars(n) {
+  function showStars(txt) {
     var el = document.getElementById("ghStarCount");
     if (!el) return;
-    if (n > 0) { el.textContent = fmtStars(n); el.hidden = false; }
-    else { el.textContent = ""; el.hidden = true; }
+    var ok = /^[0-9]+(\.[0-9]+)?[kKmM]?$/.test(txt || "") && !/^0+$/.test(txt);
+    el.textContent = ok ? txt : "";
+    el.hidden = !ok;
   }
   function fetchStars() {
     var cached = ssGet(STAR_KEY);
-    if (cached !== null) { showStars(parseInt(cached, 10) || 0); return; }
+    if (cached !== null) { showStars(cached); return; }
     if (typeof fetch !== "function") return;
-    fetch("https://api.github.com/repos/" + REPO)
+    fetch("https://img.shields.io/github/stars/" + REPO + ".json")
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (j) {
-        var n = (j && typeof j.stargazers_count === "number") ? j.stargazers_count : 0;
-        ssSet(STAR_KEY, String(n));
-        showStars(n);
+        var txt = j && j.message != null ? String(j.message).trim() : "";
+        ssSet(STAR_KEY, txt);
+        showStars(txt);
       })
-      .catch(function () { ssSet(STAR_KEY, "0"); showStars(0); });
+      .catch(function () { ssSet(STAR_KEY, ""); showStars(""); });
   }
 
   /* =======================================================================
@@ -321,6 +385,7 @@
     applyLangChrome();
     refreshChrome();
     wire();
+    wireNav();
     fetchStars();
     window.LDW.ready = true;
     document.dispatchEvent(new CustomEvent("ldw:shell-ready"));
