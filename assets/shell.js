@@ -36,6 +36,23 @@
   /* ---------- sandbox-safe localStorage ---------- */
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+  function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+  function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+
+  /* ---------- theme: an explicit choice wins, otherwise follow the OS ----------
+     The old code wrote "light" to localStorage on every page view, so almost
+     every returning visitor got pinned to light without ever choosing it. The
+     choice now lives under a new key and is only written when the toggle is
+     pressed; until then the page follows prefers-color-scheme. */
+  var THEME_KEY = "sbx-theme";
+  function systemTheme() {
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
+    catch (e) { return "light"; }
+  }
+  function savedTheme() {
+    var v = lsGet(THEME_KEY);
+    return v === "dark" || v === "light" ? v : null;
+  }
 
   /* ---------- global state ----------
      The URL decides the language, so <html lang> is what we read. localStorage
@@ -60,7 +77,7 @@
 
   var state = {
     lang:  langFromDocument(),
-    theme: lsGet("theme") || "light"
+    theme: savedTheme() || systemTheme()
   };
 
   /* ---------- helpers shared with app.js ---------- */
@@ -112,7 +129,7 @@
           '<a class="gh-star" id="ghStar" href="' + escapeHtml(REPO_URL) + '" target="_blank" rel="noopener" ' +
             'title="Star on GitHub" aria-label="Star on GitHub / 在 GitHub 給星星">' +
             '<span class="material-symbols-rounded">star</span>' +
-            '<span class="gh-star__count" id="ghStarCount">★</span>' +
+            '<span class="gh-star__count" id="ghStarCount" hidden></span>' +
           '</a>' +
           '<a class="icon-btn" id="langToggle" href="' + escapeHtml(altLangHref()) + '" ' +
              'hreflang="' + (state.lang === "en" ? "zh-Hant" : "en") + '" rel="alternate" ' +
@@ -148,6 +165,12 @@
         '</a>' +
       '</div>';
     main.parentNode.insertBefore(footer, main.nextSibling);
+
+    /* The static "English version / 中文版" link sits after the scripts so it
+       exists without JS; with JS it moves into the footer instead of floating
+       below it. */
+    var alt = document.querySelector(".lang-alt-link");
+    if (alt) { alt.removeAttribute("style"); footer.appendChild(alt); }
 
     /* shared detail dialog (used by card layouts) */
     var dialog = document.createElement("dialog");
@@ -199,7 +222,7 @@
     var page = currentPage();
     var siteTitle = t(META.title);
     var pageTitle = page ? t(page.title) : "";
-    document.title = pageTitle ? pageTitle + " · " + siteTitle : siteTitle;
+    document.title = (pageTitle && currentSlug() !== "home") ? pageTitle + " · " + siteTitle : siteTitle;
 
     var brand = document.getElementById("brandName");
     if (brand) brand.textContent = siteTitle;
@@ -217,11 +240,11 @@
   /* =======================================================================
      THEME + LANGUAGE
      ===================================================================== */
-  function applyTheme() {
+  function applyTheme(persist) {
     document.documentElement.setAttribute("data-theme", state.theme);
     var icon = document.getElementById("themeIcon");
     if (icon) icon.textContent = state.theme === "dark" ? "light_mode" : "dark_mode";
-    lsSet("theme", state.theme);
+    if (persist) lsSet(THEME_KEY, state.theme);
   }
   /* The toggle is a link now, so it is labelled with the language it leads TO,
      not the one already on screen. */
@@ -233,22 +256,46 @@
   function wire() {
     document.getElementById("themeToggle").addEventListener("click", function () {
       state.theme = state.theme === "dark" ? "light" : "dark";
-      applyTheme();
+      applyTheme(true);
     });
+    /* no explicit choice yet: keep following the OS if it flips */
+    try {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (e) {
+        if (savedTheme()) return;
+        state.theme = e.matches ? "dark" : "light";
+        applyTheme(false);
+      });
+    } catch (e) { /* old browsers: no live follow */ }
   }
 
-  /* ---------- live GitHub star count (no auth; degrades silently) ---------- */
+  /* ---------- live GitHub star count (no auth; degrades silently) ----------
+     The unauthenticated API allows 60 calls an hour per IP, and every page view
+     used to spend one. The result (including a failure, stored as 0) is cached
+     for the session, and the number only appears when there is a real count —
+     a 403 or a 0 leaves just the star icon instead of "0" or a placeholder. */
+  var STAR_KEY = "gh-stars:" + REPO;
   function fmtStars(n) {
     if (n >= 1000) return (Math.round(n / 100) / 10) + "k";
     return String(n);
   }
-  function fetchStars() {
+  function showStars(n) {
     var el = document.getElementById("ghStarCount");
-    if (!el || typeof fetch !== "function") return;
+    if (!el) return;
+    if (n > 0) { el.textContent = fmtStars(n); el.hidden = false; }
+    else { el.textContent = ""; el.hidden = true; }
+  }
+  function fetchStars() {
+    var cached = ssGet(STAR_KEY);
+    if (cached !== null) { showStars(parseInt(cached, 10) || 0); return; }
+    if (typeof fetch !== "function") return;
     fetch("https://api.github.com/repos/" + REPO)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) { if (j && typeof j.stargazers_count === "number") el.textContent = fmtStars(j.stargazers_count); })
-      .catch(function () { /* offline / rate-limited: leave the ★ placeholder */ });
+      .then(function (j) {
+        var n = (j && typeof j.stargazers_count === "number") ? j.stargazers_count : 0;
+        ssSet(STAR_KEY, String(n));
+        showStars(n);
+      })
+      .catch(function () { ssSet(STAR_KEY, "0"); showStars(0); });
   }
 
   /* =======================================================================
@@ -270,7 +317,7 @@
      ===================================================================== */
   function init() {
     injectChrome();
-    applyTheme();
+    applyTheme(false);
     applyLangChrome();
     refreshChrome();
     wire();
