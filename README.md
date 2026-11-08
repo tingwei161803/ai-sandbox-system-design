@@ -22,7 +22,7 @@
 
 - 🧱 **多頁面架構** — 一個 hub 首頁 + 9 個共用 shell 的子頁，每頁有獨立 URL 與 SEO
 - 🌏 **一個語言一個網址** — 中文在 root、English 在 `/en/`，每頁兩種語言各有自己的網址，互相用 `hreflang` 標註；切換鈕是真正的連結
-- 🌗 **深色 / 淺色模式** — 手動切換，跨頁持久
+- 🌗 **深色 / 淺色模式** — 預設跟隨系統設定，手動切換後跨頁記住
 - 🔍 **即時搜尋與分類篩選** — 元件、隔離機制、術語皆可搜尋／依分類過濾
 - 🪟 **詳情對話框 + 深連結** — 卡片點開看細節，`#<slug>` 可直接分享到特定項目
 - 🧑‍💻 **角色學習地圖** — 各角色（架構師、後端／平台、安全、DevOps/SRE、前端）要學的技能與該學到的程度（了解／會用／實作／精通）
@@ -46,7 +46,7 @@
 
 ```
 ai-sandbox-system-design/
-├── index.html          # hub 首頁（總覽）
+├── index.html          # 首頁：四道牆的同心圓示意圖、五層架構、學習工具
 ├── architecture.html   # 系統架構總覽（bento）
 ├── components.html     # 核心元件（gallery + 對話框）
 ├── dataflow.html       # 任務生命週期 / 資料流（timeline）
@@ -58,8 +58,8 @@ ai-sandbox-system-design/
 ├── flashcards.html     # 字卡 / 翻卡
 ├── en/                 # 以上十頁的英文版，檔名一一對應（root 是中文）
 ├── assets/
-│   ├── styles.css      # Material Design 3 基底 + 各版型樣式
-│   ├── shell.js        # 共用 chrome（appbar / 跨頁導覽 / 頁尾 / dialog / 語言+主題）
+│   ├── styles.css      # 「kernel blueprint」設計系統（深色優先）+ 各版型樣式
+│   ├── shell.js        # 共用 chrome（appbar / 左側分組導覽、手機底部選單 / 頁尾 / dialog / 語言+主題）
 │   └── app.js          # 版型引擎：依 data-page 選 renderer 渲染
 ├── data/
 │   └── data.js         # 唯一資料檔：SITE_META + SITE_PAGES[]（雙語）

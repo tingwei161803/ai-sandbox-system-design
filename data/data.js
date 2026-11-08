@@ -28,16 +28,63 @@ window.SITE_PAGES = [
   /* 1 · HOME / HUB                                                         */
   /* ===================================================================== */
   {
-    slug: "home", layout: "hub", icon: "home",
+    slug: "home", layout: "blueprint", icon: "home",
     title:    { en: "Overview", zh: "總覽" },
-    subtitle: { en: "A five-layer architecture that runs untrusted code inside a hardened Linux sandbox — isolated, resource-capped and fully observable. Every page shares this nav, language and theme.",
-                zh: "一套五層式架構，把不可信的程式碼關進強化過的 Linux 沙盒中執行 —— 隔離、限額、全程可觀測。所有頁面共用這個導覽、語言與主題。" },
+    subtitle: { en: "A five-layer architecture that runs untrusted code inside a hardened Linux sandbox — isolated, resource-capped and fully observable.",
+                zh: "一套五層式架構，把不可信的程式碼關進強化過的 Linux 沙盒中執行 —— 隔離、限額、全程可觀測。" },
     stats: [
       { value: 5, label: { en: "Core components", zh: "核心元件" } },
       { value: 4, label: { en: "Isolation layers", zh: "隔離機制" } },
       { value: 8, label: { en: "Namespace types (kernel 6.1)", zh: "Namespace 類型（kernel 6.1）" } },
       { value: 6, label: { en: "Lifecycle steps", zh: "任務生命週期步驟" } }
-    ]
+    ],
+    /* the home page's own heading — the nav label above stays "Overview" */
+    heading:  { en: "AI Sandbox Architecture", zh: "AI Sandbox 安全沙盒架構" },
+    cta: [
+      { href: "architecture.html", label: { en: "See the architecture", zh: "看架構" } },
+      { href: "dataflow.html", label: { en: "Follow one task through", zh: "跑一次任務流程" } }
+    ],
+    /* hero diagram: the untrusted code in the middle, four walls around it
+       (innermost first). `blocked` is an example of what each wall stops. */
+    core: { code: "exec(llm_output)", label: { en: "untrusted code", zh: "不可信程式碼" } },
+    rings: [
+      { slug: "linux-namespace", name: "Namespace",
+        asks: { en: "what it can see", zh: "看得到什麼" },
+        note: { en: "8 namespace types; PID, Network, Mount and UTS do the work here.", zh: "8 種 namespace，這裡主要用 PID、Network、Mount、UTS。" },
+        blocked: "ps → host" },
+      { slug: "seccomp-bpf", name: "Seccomp-BPF",
+        asks: { en: "what it can ask the kernel", zh: "能要求核心做什麼" },
+        note: { en: "A BPF filter checks every syscall before it runs.", zh: "每個 syscall 執行前先過一道 BPF 過濾器。" },
+        blocked: "ptrace()" },
+      { slug: "cgroup", name: "Cgroup",
+        asks: { en: "how much it can use", zh: "能用多少" },
+        note: { en: "Hard caps on CPU, memory, I/O and process count.", zh: "CPU、記憶體、I/O、行程數都有硬上限。" },
+        blocked: "fork() ×∞" },
+      { slug: "timeout", name: "Timeout",
+        asks: { en: "how long it can run", zh: "能跑多久" },
+        note: { en: "A wall-clock limit kills runaway jobs.", zh: "牆鐘時限一到就砍掉任務。" },
+        blocked: "while (true)" }
+    ],
+    /* an illustrative syscall log under the hero */
+    log: [
+      { verdict: "ALLOW", text: "read(3, buf, 4096)" },
+      { verdict: "ALLOW", text: "write(1, \"42\\n\", 3)" },
+      { verdict: "DENY",  text: "ptrace(PTRACE_ATTACH) → EPERM" },
+      { verdict: "DENY",  text: "mount(\"/\") → EPERM" },
+      { verdict: "LIMIT", text: "clone() → EAGAIN  pids.max" },
+      { verdict: "KILL",  text: "memory.max → OOM" },
+      { verdict: "KILL",  text: "wall-clock → SIGKILL" }
+    ],
+    sections: {
+      layers: { en: "Five layers, top to bottom", zh: "五層，由上而下" },
+      layersMore: { en: "Open the full architecture diagram", zh: "看完整架構圖" },
+      layersNote: { en: "Only the fourth layer runs untrusted code. Select a layer to read what it does.",
+                    zh: "只有第四層會執行不可信的程式碼。點任一層看它負責什麼。" },
+      why: { en: "Read the design principles", zh: "讀設計原則與業界現況" },
+      learn: { en: "Learn it", zh: "動手學" },
+      walls: { en: "Four walls, one job each", zh: "四道牆，各管一件事" },
+      spec: { en: "Spec", zh: "規格" }
+    }
   },
 
   /* ===================================================================== */
@@ -51,20 +98,20 @@ window.SITE_PAGES = [
     intro: { en: "Data flows top to bottom: each layer hands off to the next, and the untrusted code only ever runs at the guarded core. Each layer has one job, so a failure (or a hostile workload) stays contained instead of spreading.",
              zh: "資料由上而下流動：每一層交棒給下一層，而不可信的程式碼只在被嚴密看守的核心執行。每層只做一件事，因此故障（或惡意工作負載）會被框住，而不會擴散。" },
     layers: [
-      { icon: "devices", name: { en: "Frontend UI", zh: "前端 UI" },
+      { slug: "frontend-ui", icon: "devices", name: { en: "Frontend UI", zh: "前端 UI" },
         role: { en: "Upload, launch, view results", zh: "上傳、啟動、看結果" },
         items: [ { en: "File upload", zh: "檔案上傳" }, { en: "Sandbox launch", zh: "沙盒啟動" }, { en: "Result display", zh: "執行結果呈現" } ] },
-      { icon: "database", name: { en: "Database", zh: "資料庫" },
+      { slug: "database", icon: "database", name: { en: "Database", zh: "資料庫" },
         role: { en: "Temporary & result store", zh: "暫存 / 結果儲存" },
         items: [ { en: "Job (ID / Status)", zh: "Job 任務紀錄" }, { en: "Results", zh: "Results 結果" }, { en: "Logs", zh: "Logs 日誌" } ] },
-      { icon: "manage_accounts", name: { en: "Job Manager", zh: "任務管理器" },
+      { slug: "job-manager", icon: "manage_accounts", name: { en: "Job Manager", zh: "任務管理器" },
         role: { en: "Dispatch · monitor · return", zh: "派送 · 監控 · 回傳" },
         items: [ { en: "Dispatch to nodes", zh: "派送到節點" }, { en: "Monitor status", zh: "監控節點狀態" }, { en: "Return results", zh: "回傳執行結果" }, { en: "Store to Sandbox", zh: "存回 Sandbox" } ] },
-      { icon: "security", name: { en: "Sandbox Executor", zh: "沙盒執行層" },
+      { slug: "sandbox-executor", icon: "security", name: { en: "Sandbox Executor", zh: "沙盒執行層" },
         role: { en: "Runs untrusted code under four kernel-level controls", zh: "在四道核心層級控制下執行不可信程式碼" },
         accent: true, tag: { en: "Security core", zh: "安全核心" },
         items: [ { en: "Linux Namespace", zh: "Linux Namespace" }, { en: "Seccomp-BPF", zh: "Seccomp-BPF" }, { en: "Cgroups", zh: "Cgroup" }, { en: "Timeout", zh: "Timeout" } ] },
-      { icon: "monitor_heart", name: { en: "Monitoring & Logs", zh: "監控與日誌" },
+      { slug: "monitoring", icon: "monitor_heart", name: { en: "Monitoring & Logs", zh: "監控與日誌" },
         role: { en: "Observe everything, touch nothing", zh: "觀測一切、不碰沙盒" },
         items: [ { en: "Live resource metrics", zh: "即時資源監控" }, { en: "Anomaly alerts", zh: "異常告警" }, { en: "Log query", zh: "執行記錄查詢" } ] }
     ]
@@ -92,7 +139,7 @@ window.SITE_PAGES = [
                    zh: "使用者上傳程式碼、啟動沙盒、閱讀結果的地方。" },
         tags: ["upload", "launch", "results"],
         overview: { en: "The only layer a user touches. Three jobs: (1) file upload — submit the code or files to run; (2) sandbox launch — kick off a job; (3) result display — render stdout, files and status once the run finishes. It never executes anything itself; it only talks to the database and reads back results.",
-                    zh: "使用者唯一會接觸到的一層。三件事：(1) 檔案上傳 —— 提交要執行的程式碼或檔案；(2) 沙盒啟動 —— 觸發一個任務；(3) 執行結果呈現 —— 任務跑完後顯示 stdout、檔案與狀態。它本身不執行任何東西，只跟資料庫溝通、讀回結果。" }
+                    zh: "使用者唯一會接觸到的一層。三件事：（1）檔案上傳 —— 提交要執行的程式碼或檔案；（2）沙盒啟動 —— 觸發一個任務；（3）執行結果呈現 —— 任務跑完後顯示 stdout、檔案與狀態。它本身不執行任何東西，只跟資料庫溝通、讀回結果。" }
       },
       {
         slug: "database", category: "data",
@@ -105,16 +152,16 @@ window.SITE_PAGES = [
       },
       {
         slug: "job-manager", category: "control",
-        title:   { en: "Job Manager", zh: "任務管理器 (Job Manager)" },
+        title:   { en: "Job Manager", zh: "任務管理器（Job Manager）" },
         summary: { en: "Dispatches tasks to nodes, watches them, returns results.",
                    zh: "派送任務到節點、監看狀態、回傳結果。" },
         tags: ["dispatch", "monitor", "scale"],
         overview: { en: "The orchestrator. It (1) dispatches tasks to execution nodes, (2) monitors node status while a job is running, (3) updates and returns execution results, and (4) writes results back to the sandbox store. Adding more execution nodes behind the Job Manager is how the system scales horizontally.",
-                    zh: "調度中樞。它會 (1) 派送任務到執行節點、(2) 在任務執行中監控節點狀態、(3) 更新／回傳執行結果、(4) 把結果存回 Sandbox。在任務管理器後面增加更多執行節點，就是這套系統水平擴充的方式。" }
+                    zh: "調度中樞。它會（1）派送任務到執行節點、（2）在任務執行中監控節點狀態、（3）更新／回傳執行結果、（4）把結果存回 Sandbox。在任務管理器後面增加更多執行節點，就是這套系統水平擴充的方式。" }
       },
       {
         slug: "sandbox-executor", category: "execution",
-        title:   { en: "Sandbox Executor", zh: "沙盒執行層 (Sandbox Executor)" },
+        title:   { en: "Sandbox Executor", zh: "沙盒執行層（Sandbox Executor）" },
         summary: { en: "The security core: namespaces, seccomp-BPF, cgroups and timeout.",
                    zh: "安全核心：namespace、seccomp-BPF、cgroup 與 timeout。" },
         tags: ["namespace", "seccomp", "cgroup", "timeout"],
@@ -128,7 +175,7 @@ window.SITE_PAGES = [
                    zh: "即時資源監控、異常告警、執行記錄查詢。" },
         tags: ["metrics", "alerts", "audit"],
         overview: { en: "The observability layer. Three jobs: (1) live resource-usage monitoring while jobs run; (2) anomaly logging / notification / alerting when something misbehaves; (3) execution-log query so operators can audit what happened after the fact. It reads from the database and the executor without ever touching the sandboxed code.",
-                    zh: "可觀測性的一層。三件事：(1) 任務執行時的即時資源使用監控；(2) 異常紀錄／通知／告警；(3) 執行記錄查詢，讓維運者事後稽核發生了什麼。它從資料庫與執行器讀資料，完全不碰被沙盒化的程式碼。" }
+                    zh: "可觀測性的一層。三件事：（1）任務執行時的即時資源使用監控；（2）異常紀錄／通知／告警；（3）執行記錄查詢，讓維運者事後稽核發生了什麼。它從資料庫與執行器讀資料，完全不碰被沙盒化的程式碼。" }
       }
     ]
   },
@@ -155,7 +202,7 @@ window.SITE_PAGES = [
         body: { en: "The Job Manager describes the task's requirements and dispatches it to the Sandbox Executor.",
                 zh: "任務管理器描述任務需求，並把它派送到沙盒執行層。" } },
       { date: { en: "Step 4", zh: "第 4 步" },
-        title: { en: "Isolated execution", zh: "隔離執行" },
+        title: { en: "Isolated execution", zh: "隔離執行" }, accent: true,
         body: { en: "The code runs under namespaces, seccomp-BPF, cgroup limits and a timeout — contained on every axis.",
                 zh: "程式碼在 namespace、seccomp-BPF、cgroup 限額與 timeout 約束下執行 —— 每個面向都被框住。" } },
       { date: { en: "Step 5", zh: "第 5 步" },
@@ -318,7 +365,7 @@ window.SITE_PAGES = [
   /* 7 · ROLES / LEARNING ROADMAP (custom layout)                          */
   /* ===================================================================== */
   {
-    slug: "roles", layout: "roadmap", icon: "school",
+    slug: "roles", group: "learn", layout: "roadmap", icon: "school",
     title:    { en: "Learning Paths by Role", zh: "角色學習地圖" },
     subtitle: { en: "Want to help build a system like this? Here's what each role learns — and to what depth.",
                 zh: "想參與打造這樣一套系統？這裡列出每個角色要學什麼 —— 以及學到什麼程度。" },
@@ -403,11 +450,11 @@ window.SITE_PAGES = [
   /* 8 · GLOSSARY (custom layout)                                           */
   /* ===================================================================== */
   {
-    slug: "glossary", layout: "glossary", icon: "menu_book",
+    slug: "glossary", group: "learn", layout: "glossary", icon: "menu_book",
     title:    { en: "Glossary", zh: "技術術語速查" },
     subtitle: { en: "Search the terms used across this site.", zh: "搜尋本站用到的術語。" },
     terms: [
-      { term: { en: "Sandbox", zh: "沙盒 (Sandbox)" },
+      { term: { en: "Sandbox", zh: "沙盒（Sandbox）" },
         def:  { en: "An isolated environment for running untrusted code so it can't affect anything outside it.",
                 zh: "用來執行不可信程式碼的隔離環境，讓它無法影響外界。" } },
       { term: { en: "Namespace", zh: "Namespace" },
@@ -446,7 +493,7 @@ window.SITE_PAGES = [
       { term: { en: "Fork bomb", zh: "Fork bomb" },
         def:  { en: "An attack that spawns processes endlessly to exhaust the system; the cgroup pids controller caps it.",
                 zh: "無止盡產生行程以耗盡系統的攻擊；cgroup 的 pids 控制器可封住它。" } },
-      { term: { en: "Attack surface", zh: "攻擊面 (Attack surface)" },
+      { term: { en: "Attack surface", zh: "攻擊面（Attack surface）" },
         def:  { en: "The set of points where an attacker can try to interact with a system; restricting syscalls shrinks it.",
                 zh: "攻擊者可嘗試與系統互動的所有點；限制 syscall 可縮小它。" } },
       { term: { en: "microVM", zh: "microVM" },
@@ -455,7 +502,7 @@ window.SITE_PAGES = [
       { term: { en: "Defense in depth", zh: "縱深防禦" },
         def:  { en: "Stacking multiple independent controls so an attacker must defeat all of them, not just one.",
                 zh: "疊多道彼此獨立的防護，讓攻擊者必須全部攻破，而非只破一道。" } },
-      { term: { en: "Job Manager", zh: "任務管理器 (Job Manager)" },
+      { term: { en: "Job Manager", zh: "任務管理器（Job Manager）" },
         def:  { en: "The orchestrator that dispatches tasks to execution nodes, monitors them, and returns results.",
                 zh: "把任務派送到執行節點、監控並回傳結果的調度中樞。" } },
       { term: { en: "Control plane / Data plane", zh: "控制平面／資料平面" },
@@ -468,7 +515,7 @@ window.SITE_PAGES = [
   /* 8 · QUIZ (custom layout, session-only)                                 */
   /* ===================================================================== */
   {
-    slug: "quiz", layout: "quiz", icon: "quiz",
+    slug: "quiz", group: "learn", layout: "quiz", icon: "quiz",
     title:    { en: "Quick Quiz", zh: "隨堂測驗" },
     subtitle: { en: "Six questions on the architecture. Score is session-only — refresh to reset.",
                 zh: "六題架構小測。分數只活在當前 session —— 重新整理就歸零。" },
@@ -552,7 +599,7 @@ window.SITE_PAGES = [
   /* 9 · FLASHCARDS (custom layout)                                         */
   /* ===================================================================== */
   {
-    slug: "flashcards", layout: "flashcards", icon: "style",
+    slug: "flashcards", group: "learn", layout: "flashcards", icon: "style",
     title:    { en: "Flashcards", zh: "字卡 / 翻卡" },
     subtitle: { en: "Tap a card to flip it. Term on the front, meaning on the back.",
                 zh: "點一下卡片翻面。正面是術語，背面是意思。" },

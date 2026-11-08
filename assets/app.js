@@ -12,7 +12,7 @@
    per page load — there is no in-place language switch to subscribe to.
 
    RENDERERS is the LAYOUT REGISTRY — one entry per supported page layout:
-     hub | gallery | article | dashboard | timeline | table |
+     hub | blueprint | gallery | article | dashboard | timeline | table |
      bento | kanban | faq | comparison | leaderboard | scrolly | map
    To add a layout, add one renderer (returns the inner HTML for #page) and,
    if it needs interaction, one matching WIRE entry. Nothing else changes.
@@ -109,6 +109,184 @@
           '<div class="grid">' + cards + "</div>";
       },
 
+      /* ---- blueprint: the home page. Hero diagram of the four walls around
+              the untrusted code, the five layers as bands, then the learning
+              tools. Every other page is reachable from here. ---- */
+      blueprint: function (p) {
+        var lang = L.state.lang;
+        function pg(slug) { return L.pages.filter(function (q) { return q.slug === slug; })[0] || null; }
+        function href(slug, hash) { var q = pg(slug); return q ? L.pageHref(q) + (hash ? "#" + hash : "") : "#"; }
+        var S = p.sections || {};
+
+        /* --- the diagram --- */
+        var C = 300, RADII = [118, 168, 218, 268];
+        var ANG = [35, 145, -145, -58];          /* where each wall stops its escape attempt */
+        var rings = p.rings || [];
+        function xy(rad, deg) { var a = deg * Math.PI / 180; return { x: r(C + rad * Math.cos(a)), y: r(C + rad * Math.sin(a)) }; }
+        var svgRings = rings.map(function (rg, i) {
+          var R = RADII[i] || (RADII[RADII.length - 1] + 50 * (i - 3));
+          var lr = R - 13;   /* label runs just inside its own wall */
+          var arc = "M " + r(C - lr) + " " + C + " A " + lr + " " + lr + " 0 0 1 " + r(C + lr) + " " + C;
+          var ticks = "";
+          if (i === rings.length - 1) {     /* the outermost wall is a clock: it is the timeout */
+            for (var k = 0; k < 60; k++) {
+              var a1 = xy(R + 4, k * 6), a2 = xy(R + (k % 5 ? 9 : 14), k * 6);
+              ticks += '<line class="ring__tick" x1="' + a1.x + '" y1="' + a1.y + '" x2="' + a2.x + '" y2="' + a2.y + '"/>';
+            }
+          }
+          return '<a class="ring ring--' + (i + 1) + '" href="' + esc(href("isolation", rg.slug)) + '" data-ring="' + i + '" ' +
+              'aria-label="' + esc(rg.name + " — " + t(rg.asks)) + '">' +
+            '<path id="ringpath-' + i + '" d="' + arc + '" fill="none" stroke="none"/>' +
+            '<circle class="ring__hit" cx="' + C + '" cy="' + C + '" r="' + R + '"/>' +
+            '<circle class="ring__line" cx="' + C + '" cy="' + C + '" r="' + R + '"/>' + ticks +
+            '<text class="ring__name"><textPath href="#ringpath-' + i + '" startOffset="50%" text-anchor="middle">' +
+              esc(rg.name) + "</textPath></text></a>";
+        }).join("");
+        var attempts = rings.map(function (rg, i) {
+          var R = RADII[i] || 300, deg = ANG[i] == null ? 0 : ANG[i];
+          var s0 = xy(96, deg), s1 = xy(R - 6, deg), x0 = xy(R, deg), lab = xy(R + 16, deg);
+          var right = Math.cos(deg * Math.PI / 180) >= 0;
+          var c = 6, cx = x0.x, cy = x0.y;
+          return '<g class="attempt attempt--' + (i + 1) + '" data-ring="' + i + '">' +
+            '<line class="attempt__path" x1="' + s0.x + '" y1="' + s0.y + '" x2="' + s1.x + '" y2="' + s1.y + '"/>' +
+            '<path class="attempt__stop" d="M' + r(cx - c) + " " + r(cy - c) + "L" + r(cx + c) + " " + r(cy + c) +
+              "M" + r(cx + c) + " " + r(cy - c) + "L" + r(cx - c) + " " + r(cy + c) + '"/>' +
+            '<text class="attempt__label" x="' + lab.x + '" y="' + r(lab.y + 5) + '" text-anchor="' + (right ? "start" : "end") + '">' +
+              esc(rg.blocked || "") + "</text></g>";
+        }).join("");
+        var core = p.core || {};
+        var svg = '<svg class="rings" viewBox="-10 -10 620 620" role="img" aria-labelledby="ringsTitle">' +
+          '<title id="ringsTitle">' + esc(t(core.label)) + ": " +
+            esc(rings.map(function (rg) { return rg.name; }).join(" → ")) + "</title>" +
+          svgRings + attempts +
+          '<g class="core">' +
+            '<rect class="core__box" x="212" y="265" width="176" height="70" rx="6"/>' +
+            '<text class="core__code" x="300" y="298" text-anchor="middle">' + esc(core.code || "") + "</text>" +
+            '<text class="core__label" x="300" y="320" text-anchor="middle">' + esc(t(core.label)) + "</text>" +
+          "</g></svg>";
+
+        /* --- the four walls, readable as text --- */
+        var legend = rings.map(function (rg, i) {
+          return '<li><a class="wall" href="' + esc(href("isolation", rg.slug)) + '" data-ring="' + i + '">' +
+            '<span class="wall__name">' + esc(rg.name) + "</span>" +
+            '<span class="wall__asks">' + esc(t(rg.asks)) + "</span>" +
+            '<span class="wall__note">' + esc(t(rg.note)) + "</span>" +
+            '<code class="wall__blocked">' + esc(rg.blocked || "") + "</code></a></li>";
+        }).join("");
+
+        /* --- the spec block: the old stat boxes, now a drawing's title block --- */
+        var spec = (p.stats || []).map(function (s) {
+          return '<div class="spec__row"><dt>' + esc(t(s.label)) + "</dt><dd>" + esc(String(s.value)) + "</dd></div>";
+        }).join("");
+
+        var log = (p.log || []).map(function (ln) {
+          return '<li class="log__line log__line--' + esc(String(ln.verdict).toLowerCase()) + '">' +
+            '<b class="log__verdict">' + esc(ln.verdict) + "</b> " + esc(ln.text) + "</li>";
+        }).join("");
+
+        var ctas = (p.cta || []).map(function (c, i) {
+          return '<a class="btn' + (i ? " btn--ghost" : " btn--primary") + '" href="' + esc(c.href) + '">' + esc(t(c.label)) + "</a>";
+        }).join("");
+
+        /* "AI Sandbox" on its own line, the rest of the name under it */
+        var full = t(p.heading) || t(L.meta.title), cut = full.indexOf("AI Sandbox") === 0 ? 10 : full.length;
+        var title = '<span class="hero__title-a">' + esc(full.slice(0, cut)) + "</span>" +
+          (cut < full.length ? ' <span class="hero__title-b">' + esc(full.slice(cut).trim()) + "</span>" : "");
+
+        var hero =
+          '<section class="hero" aria-labelledby="heroTitle">' +
+            '<div class="hero__grid">' +
+              '<div class="hero__text">' +
+                '<h1 class="hero__title" id="heroTitle">' + title + "</h1>" +
+                '<p class="hero__thesis">' + esc(t(p.subtitle)) + "</p>" +
+                '<div class="hero__cta">' + ctas + "</div>" +
+                '<h2 class="hero__walls-title">' + esc(t(S.walls)) + "</h2>" +
+                '<ol class="walls">' + legend + "</ol>" +
+              "</div>" +
+              '<div class="hero__figure">' + svg +
+                '<dl class="spec" aria-label="' + esc(t(S.spec)) + '">' + spec + "</dl>" +
+              "</div>" +
+            "</div>" +
+            '<ol class="log" aria-label="syscall log">' + log + "</ol>" +
+          "</section>";
+
+        /* --- five layers as bands --- */
+        var arch = pg("architecture");
+        var bands = ((arch && arch.layers) || []).map(function (ly, i) {
+          var items = (ly.items || []).map(function (it) { return "<li>" + esc(t(it)) + "</li>"; }).join("");
+          return '<li><a class="band' + (ly.accent ? " band--core" : "") + '" href="' + esc(href("components", ly.slug)) + '">' +
+            '<span class="band__idx">L' + (i + 1) + "</span>" +
+            '<span class="band__name">' + esc(t(ly.name)) + "</span>" +
+            '<span class="band__role">' + esc(t(ly.role)) + "</span>" +
+            '<ul class="band__items">' + items + "</ul></a></li>";
+        }).join("");
+        var layers =
+          '<section class="home-sec home-layers" aria-labelledby="layersTitle">' +
+            '<div class="home-sec__head">' +
+              '<h2 id="layersTitle">' + esc(t(S.layers)) + "</h2>" +
+              '<p>' + esc(t(S.layersNote)) + "</p>" +
+            "</div>" +
+            '<ol class="bands">' + bands + "</ol>" +
+            '<p class="home-sec__more"><a class="textlink" href="' + esc(href("architecture")) + '">' + esc(t(S.layersMore)) + "</a></p>" +
+          "</section>";
+
+        /* --- why: the line the design page is built around --- */
+        var design = pg("design"), quote = "";
+        ((design && design.sections) || []).forEach(function (sec) {
+          (sec.blocks || []).forEach(function (b) { if (!quote && b.type === "quote") quote = t(b.text); });
+        });
+        var why = quote ?
+          '<section class="home-sec home-why">' +
+            '<blockquote class="why__quote"><p>' + esc(quote) + "</p></blockquote>" +
+            '<p class="why__more"><a class="textlink" href="' + esc(href("design")) + '">' + esc(t(S.why)) + "</a></p>" +
+          "</section>" : "";
+
+        /* --- learn: four tools, each drawn as what it is --- */
+        var roles = pg("roles"), gl = pg("glossary"), qz = pg("quiz"), fc = pg("flashcards");
+        var learn = "";
+        if (roles) {
+          learn += '<a class="tool tool--roles" href="' + esc(href("roles")) + '">' +
+            '<span class="tool__title">' + esc(t(roles.title)) + "</span>" +
+            '<span class="tool__sub">' + esc(t(roles.subtitle)) + "</span>" +
+            '<ul class="tool__roles">' + (roles.roles || []).map(function (ro) {
+              return '<li><span class="material-symbols-rounded" aria-hidden="true">' + esc(ro.icon || "badge") + "</span>" + esc(t(ro.name)) + "</li>";
+            }).join("") + "</ul></a>";
+        }
+        if (gl) {
+          var term = (gl.terms || []).filter(function (x) { return t(x.term) === "Seccomp-BPF"; })[0] || (gl.terms || [])[0] || {};
+          learn += '<a class="tool tool--term" href="' + esc(href("glossary")) + '">' +
+            '<span class="tool__title">' + esc(t(gl.title)) + '<span class="tool__count">' + (gl.terms || []).length + "</span></span>" +
+            '<span class="term" aria-hidden="true"><span class="term__prompt">$ man ' + esc(String(t(term.term)).toLowerCase()) + "</span>" +
+              '<span class="term__out">' + esc(t(term.def)) + '</span><span class="term__cursor">_</span></span>' +
+            '<span class="tool__sub">' + esc(t(gl.subtitle)) + "</span></a>";
+        }
+        if (qz) {
+          var q0 = (qz.questions || [])[0] || {};
+          learn += '<a class="tool tool--quiz" href="' + esc(href("quiz")) + '">' +
+            '<span class="tool__title">' + esc(t(qz.title)) + '<span class="tool__count">' + (qz.questions || []).length + "</span></span>" +
+            '<span class="mini-q" aria-hidden="true"><span class="mini-q__q">' + esc(t(q0.q)) + "</span>" +
+              (q0.options || []).map(function (o, oi) {
+                return '<span class="mini-q__o' + (oi === q0.answer ? " mini-q__o--hint" : "") + '">' + esc(t(o)) + "</span>";
+              }).join("") + "</span>" +
+            '<span class="tool__sub">' + esc(t(qz.subtitle)) + "</span></a>";
+        }
+        if (fc) {
+          var c0 = (fc.cards || []).filter(function (x) { return t(x.front) === "TOCTOU"; })[0] || (fc.cards || [])[0] || {};
+          learn += '<a class="tool tool--cards" href="' + esc(href("flashcards")) + '">' +
+            '<span class="tool__title">' + esc(t(fc.title)) + '<span class="tool__count">' + (fc.cards || []).length + "</span></span>" +
+            '<span class="stack" aria-hidden="true"><span class="stack__card stack__card--back"></span>' +
+              '<span class="stack__card stack__card--mid"></span>' +
+              '<span class="stack__card stack__card--front">' + esc(t(c0.front)) + "</span></span>" +
+            '<span class="tool__sub">' + esc(t(fc.subtitle)) + "</span></a>";
+        }
+        var learnSec = learn ?
+          '<section class="home-sec home-learn" aria-labelledby="learnTitle">' +
+            '<div class="home-sec__head"><h2 id="learnTitle">' + esc(t(S.learn)) + "</h2></div>" +
+            '<div class="tools">' + learn + "</div></section>" : "";
+
+        return hero + layers + why + learnSec;
+      },
+
       /* ---- gallery: search + chips + card grid + dialog ---- */
       gallery: function (p) {
         var cats = (p.categories || []).map(function (c) {
@@ -190,8 +368,9 @@
 
       /* ---- timeline: dated event cards down a rail ---- */
       timeline: function (p) {
-        var items = (p.events || []).map(function (ev) {
-          return '<li class="tl-item" data-item><div class="tl-dot" aria-hidden="true"></div>' +
+        var items = (p.events || []).map(function (ev, i) {
+          return '<li class="tl-item' + (ev.accent ? " tl-item--core" : "") + '" data-item>' +
+            '<div class="tl-dot" aria-hidden="true">' + (i + 1) + "</div>" +
             '<div class="tl-card"><span class="tl-date">' + esc(t(ev.date)) + "</span>" +
             '<h3 class="tl-title">' + esc(t(ev.title)) + "</h3>" +
             '<p class="tl-body">' + esc(t(ev.body)) + "</p></div></li>";
@@ -363,11 +542,15 @@
           var connector = i < layers.length - 1
             ? '<div class="arch-connector" aria-hidden="true"><span class="material-symbols-rounded">arrow_downward</span></div>'
             : "";
+          var comp = L.pages.filter(function (q) { return q.slug === "components"; })[0];
+          var name = esc(t(ly.name));
+          if (comp && ly.slug) name = '<a href="' + esc(L.pageHref(comp) + "#" + ly.slug) + '">' + name + "</a>";
           return '<div class="arch-layer' + (ly.accent ? " arch-layer--accent" : "") + '" data-item>' +
+              '<span class="arch-layer__idx" aria-hidden="true">L' + (i + 1) + "</span>" +
               '<div class="arch-layer__head">' +
                 '<span class="material-symbols-rounded arch-layer__icon" aria-hidden="true">' + esc(ly.icon || "layers") + "</span>" +
                 '<div class="arch-layer__titles">' +
-                  '<div class="arch-layer__name">' + esc(t(ly.name)) + "</div>" +
+                  '<div class="arch-layer__name">' + name + "</div>" +
                   (t(ly.role) ? '<div class="arch-layer__role">' + esc(t(ly.role)) + "</div>" : "") +
                 "</div>" +
                 (t(ly.tag) ? '<span class="arch-layer__tag">' + esc(t(ly.tag)) + "</span>" : "") +
@@ -385,11 +568,20 @@
         var levelMap = {};
         levels.forEach(function (lv) { levelMap[lv.key] = lv.label; });
         function lvlText(k) { return levelMap[k] ? t(levelMap[k]) : k; }
+        function depth(k) {
+          for (var i = 0; i < levels.length; i++) if (levels[i].key === k) return i + 1;
+          return 0;
+        }
+        function meter(k) {
+          var d = depth(k), html = "";
+          for (var i = 1; i <= levels.length; i++) html += "<i" + (i <= d ? ' class="on"' : "") + "></i>";
+          return '<span class="meter" aria-hidden="true">' + html + "</span>";
+        }
 
         var legendLabel = L.state.lang === "en" ? "Depth:" : "學到什麼程度？";
         var legend = '<span class="roadmap-legend__label">' + esc(legendLabel) + "</span>" +
           levels.map(function (lv) {
-            return '<span class="legend-item"><span class="lvl lvl--' + esc(lv.key) + '">' + esc(t(lv.label)) + "</span>" +
+            return '<span class="legend-item">' + meter(lv.key) + '<span class="lvl lvl--' + esc(lv.key) + '">' + esc(t(lv.label)) + "</span>" +
               (t(lv.note) ? '<span class="legend-note">' + esc(t(lv.note)) + "</span>" : "") + "</span>";
           }).join("");
 
@@ -397,7 +589,7 @@
           var skills = (role.skills || []).map(function (s) {
             return '<li class="skill">' +
               '<span class="skill__name">' + esc(t(s.name)) + "</span>" +
-              '<span class="lvl lvl--' + esc(s.level) + '">' + esc(lvlText(s.level)) + "</span>" +
+              '<span class="skill__lvl">' + meter(s.level) + '<span class="lvl lvl--' + esc(s.level) + '">' + esc(lvlText(s.level)) + "</span></span>" +
               (t(s.note) ? '<span class="skill__note">' + esc(t(s.note)) + "</span>" : "") +
               "</li>";
           }).join("");
@@ -426,6 +618,25 @@
     var WIRE = {
       hub: function () { animateCounters(); },
 
+      /* hovering or focusing a wall in the list lights the same ring, and back */
+      blueprint: function () {
+        var hero = pageEl.querySelector(".hero");
+        if (!hero) return;
+        var parts = [].slice.call(hero.querySelectorAll("[data-ring]"));
+        function set(i) {
+          parts.forEach(function (el) { el.classList.toggle("is-hot", el.getAttribute("data-ring") === i); });
+          hero.classList.toggle("has-hot", i !== null);
+        }
+        parts.forEach(function (el) {
+          if (el.tagName.toLowerCase() !== "a") return;
+          var i = el.getAttribute("data-ring");
+          el.addEventListener("mouseenter", function () { set(i); });
+          el.addEventListener("mouseleave", function () { set(null); });
+          el.addEventListener("focus", function () { set(i); });
+          el.addEventListener("blur", function () { set(null); });
+        });
+      },
+
       gallery: function (p) {
         var grid = document.getElementById("grid");
         var search = document.getElementById("search");
@@ -443,8 +654,10 @@
           var rows = (p.items || []).filter(matches);
           grid.innerHTML = rows.map(function (item) {
             var tags = (item.tags || []).map(function (g) { return '<span class="tag">' + esc(g) + "</span>"; }).join("");
+            var cat = (p.categories || []).filter(function (c) { return c.key === item.category; })[0];
             return '<article class="card" tabindex="0" role="button" data-item data-slug="' + esc(item.slug) + '" ' +
               'aria-label="' + esc(t(item.title)) + '">' +
+              (cat ? '<span class="card__cat">' + esc(cat[L.state.lang] || cat.en) + "</span>" : "") +
               '<h3 class="card__title">' + esc(t(item.title)) + "</h3>" +
               '<p class="card__summary">' + esc(t(item.summary)) + "</p>" +
               (tags ? '<div class="card__tags">' + tags + "</div>" : "") + "</article>";
@@ -767,7 +980,10 @@
                 else if (bi === oi) b.classList.add("quiz-opt--wrong");
               });
               var ok = oi === q.answer;
-              explainEl.innerHTML = '<span class="quiz-mark">' + (ok ? "✅" : "❌") + "</span> " + esc(t(q.explain));
+              explainEl.classList.toggle("quiz-explain--ok", ok);
+              explainEl.innerHTML = '<span class="material-symbols-rounded quiz-mark" aria-hidden="true">' + (ok ? "check_circle" : "cancel") + "</span>" +
+                '<span class="visually-hidden">' + (ok ? (L.state.lang === "en" ? "Correct. " : "答對了。") : (L.state.lang === "en" ? "Not quite. " : "答錯了。")) + "</span>" +
+                "<span>" + esc(t(q.explain)) + "</span>";
               explainEl.hidden = false;
               updateScore();
             });

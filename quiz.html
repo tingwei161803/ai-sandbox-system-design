@@ -15,7 +15,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="用六題隨堂測驗檢驗你對 AI Sandbox 安全沙盒架構的理解（分數只活在當前 session）。" />
-  <meta name="theme-color" content="#0B66C2" />
+  <meta name="theme-color" content="#0B1220" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27%230B66C2%27%3E%3Cpath d=%27M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3z%27/%3E%3C/svg%3E" />
   <link rel="canonical" href="https://ai-sandbox-system-design.peteraim.com/quiz.html" />
   <link rel="alternate" hreflang="zh-Hant" href="https://ai-sandbox-system-design.peteraim.com/quiz.html" />
@@ -48,9 +48,18 @@
   }
   </script>
 
+  <script>
+    /* set the theme before first paint: a saved choice, otherwise the OS */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("sbx-theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400..700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
   <meta property="og:image" content="https://ai-sandbox-system-design.peteraim.com/og-image.png">
@@ -60,13 +69,13 @@
 </head>
 <body data-page="quiz">
   <!-- shell.js injects the app bar, cross-page nav, footer and dialog around this -->
-  <main id="page">
+  <main id="page" class="page page--quiz">
 <header class="page-head"><h1>隨堂測驗</h1><p class="page-head__sub">六題架構小測。分數只活在當前 session —— 重新整理就歸零。</p></header><div class="quiz-score" aria-live="polite"><span class="quiz-score__label">得分</span> <b id="quizScoreVal">0 / 6</b></div><div class="quiz" id="quiz"><div class="quiz-card" data-item="" data-qi="0"><div class="quiz-q"><span class="quiz-num">1</span><span>哪一層真正執行不可信的程式碼？</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">前端 UI</button><button class="quiz-opt" type="button" data-o="1">資料庫</button><button class="quiz-opt" type="button" data-o="2">沙盒執行層</button><button class="quiz-opt" type="button" data-o="3">監控與日誌</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="1"><div class="quiz-q"><span class="quiz-num">2</span><span>Linux namespace 主要控制什麼？</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">行程能用多少 CPU／記憶體</button><button class="quiz-opt" type="button" data-o="1">行程能看到、能互動的範圍</button><button class="quiz-opt" type="button" data-o="2">行程能跑多久</button><button class="quiz-opt" type="button" data-o="3">檔案屬於哪個使用者</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="2"><div class="quiz-q"><span class="quiz-num">3</span><span>Seccomp-BPF 的運作方式是…</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">把所有 syscall 加密</button><button class="quiz-opt" type="button" data-o="1">在 syscall 執行前過濾它們</button><button class="quiz-opt" type="button" data-o="2">限制行程數量</button><button class="quiz-opt" type="button" data-o="3">給每個任務自己的核心</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="3"><div class="quiz-q"><span class="quiz-num">4</span><span>哪個 cgroup 控制器能化解 fork bomb？</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">cpu</button><button class="quiz-opt" type="button" data-o="1">memory</button><button class="quiz-opt" type="button" data-o="2">io</button><button class="quiz-opt" type="button" data-o="3">pids</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="4"><div class="quiz-q"><span class="quiz-num">5</span><span>為什麼讓任務、結果、日誌都流經共享資料庫？</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">讓 UI 比較好套樣式</button><button class="quiz-opt" type="button" data-o="1">讓各層解耦、可各自獨立擴充</button><button class="quiz-opt" type="button" data-o="2">因為核心強制要求</button><button class="quiz-opt" type="button" data-o="3">為了不用 namespace</button></div><div class="quiz-explain" hidden=""></div></div><div class="quiz-card" data-item="" data-qi="5"><div class="quiz-q"><span class="quiz-num">6</span><span>Timeout 控制是在防什麼？</span></div><div class="quiz-opts"><button class="quiz-opt" type="button" data-o="0">卡住或無限迴圈、霸佔資源的程式碼</button><button class="quiz-opt" type="button" data-o="1">弱密碼</button><button class="quiz-opt" type="button" data-o="2">磁碟碎片</button><button class="quiz-opt" type="button" data-o="3">緩慢的網路線</button></div><div class="quiz-explain" hidden=""></div></div></div>
 </main>
 
   <script src="data/data.js"></script>
   <script src="assets/shell.js"></script>
   <script src="assets/app.js"></script>
-<p class="lang-alt-link" style="text-align:center;padding:12px;"><a href="/en/quiz.html" hreflang="en" rel="alternate" lang="en">English version</a></p>
+<p class="lang-alt-link"><a href="/en/quiz.html" hreflang="en" rel="alternate" lang="en">English version</a></p>
 </body>
 </html>
